@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Sign In | Candlee</title>
+  <title>Welcome to Candlee ♡</title>
 
   <style>
     :root {
@@ -14,10 +14,10 @@
       --dark-pink: #d88fa5;
       --brown: #624b42;
       --light-brown: #92776b;
-      --white: #ffffff;
       --border: #eadbd3;
       --green: #49765a;
       --red: #a94343;
+      --white: #ffffff;
     }
 
     * {
@@ -34,8 +34,16 @@
       font-family: Georgia, "Times New Roman", serif;
       color: var(--brown);
       background:
-        radial-gradient(circle at top left, #f8e7eb, transparent 40%),
-        radial-gradient(circle at bottom right, #f4e5d5, transparent 40%),
+        radial-gradient(
+          circle at top left,
+          #f8e7eb,
+          transparent 40%
+        ),
+        radial-gradient(
+          circle at bottom right,
+          #f4e5d5,
+          transparent 40%
+        ),
         var(--cream);
     }
 
@@ -50,7 +58,7 @@
     }
 
     .brand-icon {
-      font-size: 42px;
+      font-size: 44px;
       margin-bottom: 4px;
     }
 
@@ -61,16 +69,16 @@
     }
 
     .brand p {
-      margin: 8px 0 0;
+      margin-top: 8px;
       color: var(--light-brown);
       font-size: 15px;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.88);
+      padding: 32px;
+      background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--border);
       border-radius: 25px;
-      padding: 32px;
       box-shadow: 0 15px 45px rgba(98, 75, 66, 0.09);
     }
 
@@ -105,7 +113,6 @@
       font-size: 15px;
       font-family: Arial, sans-serif;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus {
@@ -114,48 +121,59 @@
     }
 
     button {
-      width: 100%;
-      padding: 14px;
       border: none;
       border-radius: 12px;
-      font-size: 15px;
-      font-weight: bold;
+      padding: 13px 16px;
+      font-size: 14px;
       font-family: Arial, sans-serif;
       cursor: pointer;
-      transition: transform 0.2s, opacity 0.2s;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
     }
 
     button:disabled {
       opacity: 0.6;
       cursor: wait;
-      transform: none;
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--dark-pink);
+      outline-offset: 3px;
     }
 
     .primary {
+      width: 100%;
       margin-top: 24px;
       background: var(--dark-pink);
       color: white;
+      font-size: 15px;
+      font-weight: bold;
     }
 
-    .secondary {
-      margin-top: 12px;
-      background: var(--pink);
-      color: var(--brown);
+    .primary:hover {
+      background: #c87e95;
     }
 
     .text-button {
       display: block;
-      width: auto;
       margin: 13px auto 0;
       padding: 7px;
       background: transparent;
       color: var(--light-brown);
-      font-size: 13px;
-      font-weight: normal;
+    }
+
+    .switch-text {
+      text-align: center;
+      margin: 22px 0 0;
+      color: var(--light-brown);
+      font-size: 14px;
+    }
+
+    .switch-button {
+      display: inline;
+      padding: 0;
+      background: transparent;
+      color: #bd7089;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .message {
@@ -181,22 +199,6 @@
       background: #fff0ef;
       color: var(--red);
       border: 1px solid #f0d2cf;
-    }
-
-    .switch-text {
-      text-align: center;
-      margin: 22px 0 0;
-      color: var(--light-brown);
-      font-size: 14px;
-    }
-
-    .switch-text button {
-      display: inline;
-      width: auto;
-      padding: 0;
-      background: transparent;
-      color: #bd7089;
-      font-size: 14px;
     }
 
     .footer {
@@ -227,6 +229,7 @@
 </head>
 
 <body>
+
   <main class="page">
 
     <header class="brand">
@@ -265,7 +268,7 @@
           required
         >
 
-        <label for="password">Password</label>
+        <label for="password" id="passwordLabel">Password</label>
         <input
           type="password"
           id="password"
@@ -292,7 +295,11 @@
 
       </form>
 
-      <button type="button" class="text-button" id="forgotButton">
+      <button
+        type="button"
+        class="text-button"
+        id="forgotButton"
+      >
         Forgot your password?
       </button>
 
@@ -304,8 +311,12 @@
       ></div>
 
       <p class="switch-text" id="switchText">
-        New to Candlee?
-        <button type="button" id="switchButton">Create an account</button>
+        <span id="switchPrompt">New to Candlee?</span>
+        <button
+          type="button"
+          class="switch-button"
+          id="switchButton"
+        >Create an account</button>
       </p>
 
     </section>
@@ -337,8 +348,10 @@
     let busy = false;
 
     const form = $("authForm");
-    const messageBox = $("message");
     const submitButton = $("submitButton");
+    const switchButton = $("switchButton");
+    const forgotButton = $("forgotButton");
+    const messageBox = $("message");
 
     function showMessage(text, type = "success") {
       messageBox.textContent = text;
@@ -352,9 +365,10 @@
 
     function setBusy(value) {
       busy = value;
+
       submitButton.disabled = value;
-      $("switchButton").disabled = value;
-      $("forgotButton").disabled = value;
+      switchButton.disabled = value;
+      forgotButton.disabled = value;
 
       if (value) {
         submitButton.textContent = "Please wait…";
@@ -374,15 +388,17 @@
         mode !== "signup"
       );
 
-      $("forgotButton").classList.toggle(
+      forgotButton.classList.toggle(
         "hidden",
         mode !== "signin"
       );
 
       $("formTitle").textContent =
-        mode === "signup" ? "Your new beginning ♡" :
-        mode === "reset" ? "Choose a new password ♡" :
-        "Welcome back ♡";
+        mode === "signup"
+          ? "Your new beginning ♡"
+          : mode === "reset"
+          ? "Choose a new password ♡"
+          : "Welcome back ♡";
 
       $("formSubtitle").textContent =
         mode === "signup"
@@ -392,23 +408,284 @@
           : "Your dreams, your goals, your little moments. Let's pick up where you left off.";
 
       submitButton.textContent =
-        mode === "signup" ? "Create my account ♡" :
-        mode === "reset" ? "Save new password ♡" :
-        "Sign in ♡";
+        mode === "signup"
+          ? "Create my account ♡"
+          : mode === "reset"
+          ? "Save new password ♡"
+          : "Sign in ♡";
+
+      $("switchPrompt").textContent =
+        mode === "signup"
+          ? "Already have an account?"
+          : "New to Candlee?";
+
+      switchButton.textContent =
+        mode === "signup"
+          ? "Sign in"
+          : "Create an account";
 
       $("switchText").classList.toggle(
         "hidden",
         mode === "reset"
       );
 
-      $("switchText").innerHTML =
-        mode === "signup"
-          ? 'Already have an account? <button type="button" id="switchButton">Sign in</button>'
-          : 'New to Candlee? <button type="button" id="switchButton">Create an account</button>';
+      $("passwordLabel").textContent =
+        mode === "reset" ? "New password" : "Password";
 
-      $("switchButton").disabled = busy;
+      $("password").placeholder =
+        mode === "signin"
+          ? "Your password"
+          : "At least 8 characters";
 
       $("password").autocomplete =
-        mode === "signin" ? "current-password" : "new-password";
+        mode === "signin"
+          ? "current-password"
+          : "new-password";
 
-      $("password").placeholder
+      $("password").minLength = 8;
+
+      $("confirmPassword").required = mode === "signup";
+      $("displayName").required = mode === "signup";
+
+      switchButton.disabled = busy;
+      forgotButton.disabled = busy;
+      submitButton.disabled = busy;
+    }
+
+    function changeMode(newMode) {
+      if (busy) return;
+
+      mode = newMode;
+      form.reset();
+      clearMessage();
+      updateForm();
+    }
+
+    // This button stays in the page permanently.
+    // It is not recreated when the form changes.
+    switchButton.addEventListener("click", () => {
+      if (busy) return;
+
+      if (mode === "signin") {
+        changeMode("signup");
+      } else if (mode === "signup") {
+        changeMode("signin");
+      }
+    });
+
+    function goToDashboard() {
+      window.location.href = new URL(
+        "dashboard.html",
+        window.location.href
+      ).href;
+    }
+
+    async function checkExistingSession() {
+      try {
+        const { data, error } =
+          await supabase.auth.getSession();
+
+        if (error) {
+          console.error("Session check failed:", error);
+          return;
+        }
+
+        if (
+          data.session &&
+          !window.location.hash.includes("type=recovery")
+        ) {
+          goToDashboard();
+          return;
+        }
+
+        if (window.location.hash.includes("type=recovery")) {
+          mode = "reset";
+          updateForm();
+
+          showMessage(
+            "Choose your new password below."
+          );
+        }
+      } catch (error) {
+        console.error("Could not check session:", error);
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (busy) return;
+
+      clearMessage();
+
+      const email = $("email").value.trim();
+      const password = $("password").value;
+
+      setBusy(true);
+
+      try {
+        if (mode === "signup") {
+          const displayName = $("displayName").value.trim();
+          const confirmPassword = $("confirmPassword").value;
+
+          if (!displayName) {
+            throw new Error("Please enter your name.");
+          }
+
+          if (password.length < 8) {
+            throw new Error(
+              "Your password must contain at least 8 characters."
+            );
+          }
+
+          if (password !== confirmPassword) {
+            throw new Error(
+              "Your passwords don't match. Please try again!"
+            );
+          }
+
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                display_name: displayName
+              },
+              emailRedirectTo: new URL(
+                "signin.html",
+                window.location.href
+              ).href
+            }
+          });
+
+          if (error) throw error;
+
+          if (data.session) {
+            showMessage(
+              "Your account is ready! Welcome to Candlee ♡"
+            );
+
+            goToDashboard();
+            return;
+          }
+
+          mode = "signin";
+          form.reset();
+          updateForm();
+
+          showMessage(
+            "Your sign-up request was received! Check your email for a confirmation link if email confirmation is enabled. After confirming, return here and sign in."
+          );
+
+        } else if (mode === "signin") {
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) throw error;
+
+          showMessage("You're signed in! Welcome back ♡");
+          goToDashboard();
+          return;
+
+        } else if (mode === "reset") {
+          const { error } = await supabase.auth.updateUser({
+            password
+          });
+
+          if (error) throw error;
+
+          window.history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search
+          );
+
+          mode = "signin";
+          form.reset();
+          updateForm();
+
+          showMessage(
+            "Your password has been updated! You can now sign in with your new password."
+          );
+        }
+
+      } catch (error) {
+        console.error("Candlee authentication error:", error);
+
+        showMessage(
+          error.message ||
+          "Something went wrong. Please try again.",
+          "error"
+        );
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    forgotButton.addEventListener("click", async () => {
+      if (busy) return;
+
+      const email = $("email").value.trim();
+
+      clearMessage();
+
+      if (!email) {
+        showMessage(
+          "Enter your email address first, then click Forgot your password.",
+          "error"
+        );
+
+        $("email").focus();
+        return;
+      }
+
+      setBusy(true);
+
+      try {
+        const { error } =
+          await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: new URL(
+              "signin.html",
+              window.location.href
+            ).href
+          });
+
+        if (error) throw error;
+
+        showMessage(
+          "If an account exists for that email, a password reset link will be sent. Check your inbox."
+        );
+
+      } catch (error) {
+        console.error("Password reset error:", error);
+
+        showMessage(
+          error.message ||
+          "We couldn't send the reset email. Please try again.",
+          "error"
+        );
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        mode = "reset";
+        updateForm();
+
+        showMessage(
+          "You're in password reset mode. Choose your new password below."
+        );
+      }
+    });
+
+    updateForm();
+    checkExistingSession();
+  </script>
+
+</body>
+</html>
+```
