@@ -2,14 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Welcome to Candlee 🤎</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
-    content="Your little corner of the world. Welcome to Candlee."
+    content="Candlee — your little corner of the world."
   >
+
+  <title>Welcome to Candlee 🤎</title>
 
   <style>
     :root {
@@ -20,6 +24,8 @@
       --beige: #E8DED0;
       --blush: #DDB8B0;
       --muted: #88796E;
+      --success: #476B50;
+      --error: #954B43;
     }
 
     * {
@@ -49,6 +55,7 @@
         var(--cream);
 
       color: var(--brown);
+
       font-family:
         "Trebuchet MS",
         "Segoe UI",
@@ -59,26 +66,31 @@
       font: inherit;
     }
 
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid var(--blush);
+      outline-offset: 4px;
+    }
+
     .page {
       width: 100%;
       max-width: 440px;
       text-align: center;
-      position: relative;
     }
 
     .decoration {
-      font-size: 25px;
-      letter-spacing: 15px;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
       color: var(--cocoa);
+      font-size: 25px;
+      letter-spacing: 12px;
     }
 
     .logo {
+      margin: 0;
       font-family: Georgia, serif;
-      font-size: clamp(46px, 10vw, 66px);
+      font-size: clamp(48px, 10vw, 66px);
       font-weight: normal;
       letter-spacing: -3px;
-      margin: 0;
     }
 
     .logo span {
@@ -86,69 +98,79 @@
     }
 
     .tagline {
+      margin: 12px 0 30px;
       color: var(--muted);
       font-size: 15px;
-      margin: 12px 0 30px;
       line-height: 1.7;
     }
 
     .card {
-      background: rgba(255, 252, 247, 0.94);
+      padding: 34px 28px;
+
+      background: rgba(255, 252, 247, 0.96);
       border: 1px solid #EEE4D8;
       border-radius: 28px;
-      padding: 34px 28px;
-      box-shadow: 0 18px 50px rgba(73, 58, 50, 0.08);
+
+      box-shadow:
+        0 18px 50px rgba(73, 58, 50, 0.08);
     }
 
     .welcome {
+      margin: 0 0 10px;
+
       font-family: Georgia, serif;
       font-size: 29px;
       font-weight: normal;
-      margin: 0 0 10px;
     }
 
     .subtitle {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.7;
       margin: 0 0 27px;
+
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
     }
 
     .auth-button {
       width: 100%;
       min-height: 54px;
+
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
 
-      padding: 13px 16px;
       margin: 12px 0;
+      padding: 13px 16px;
 
+      color: var(--brown);
       background: #FFFFFF;
+
       border: 1px solid #E5DCD1;
       border-radius: 15px;
 
-      color: var(--brown);
       font-size: 14px;
       font-weight: 600;
 
       cursor: pointer;
+
       transition:
         transform 0.2s ease,
         background 0.2s ease,
         box-shadow 0.2s ease;
     }
 
-    .auth-button:hover {
+    .auth-button:hover:not(:disabled) {
       transform: translateY(-2px);
       background: #FFF9F2;
-      box-shadow: 0 6px 16px rgba(73, 58, 50, 0.07);
+
+      box-shadow:
+        0 6px 16px rgba(73, 58, 50, 0.07);
     }
 
-    .auth-button:focus-visible {
-      outline: 3px solid var(--blush);
-      outline-offset: 3px;
+    .auth-button:disabled {
+      cursor: wait;
+      opacity: 0.65;
     }
 
     .provider-icon {
@@ -161,9 +183,12 @@
       display: flex;
       align-items: center;
       gap: 12px;
+
       margin: 24px 0;
+
       color: #A29488;
-      font-size: 12px;
+      font-size: 11px;
+      letter-spacing: 1px;
     }
 
     .divider::before,
@@ -175,21 +200,26 @@
     }
 
     .email-note {
+      margin: 0;
+
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.7;
-      margin: 0;
+      line-height: 1.8;
     }
 
     .status {
       display: none;
+
       margin-top: 18px;
-      padding: 12px;
-      border-radius: 12px;
+      padding: 13px;
+
       background: #F2E9DE;
+      border-radius: 12px;
+
       color: var(--brown);
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.7;
+
       overflow-wrap: anywhere;
     }
 
@@ -197,16 +227,61 @@
       display: block;
     }
 
+    .status.error {
+      color: var(--error);
+      background: #F9E9E5;
+    }
+
+    .status.success {
+      color: var(--success);
+      background: #EAF2E8;
+    }
+
+    .account-panel {
+      display: none;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--beige);
+    }
+
+    .account-panel.visible {
+      display: block;
+    }
+
+    .account-email {
+      margin: 0 0 15px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .signout-button {
+      padding: 10px 18px;
+
+      color: var(--cocoa);
+      background: transparent;
+
+      border: 1px solid var(--beige);
+      border-radius: 12px;
+
+      cursor: pointer;
+    }
+
+    .signout-button:hover {
+      background: #F7EFE5;
+    }
+
     .footer {
+      margin-top: 25px;
+
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.8;
-      margin-top: 25px;
+      line-height: 1.9;
     }
 
     .footer a {
       color: var(--cocoa);
-      text-decoration: underline;
       text-underline-offset: 3px;
     }
 
@@ -254,7 +329,10 @@
       Your little corner of the world.
     </p>
 
-    <section class="card" aria-labelledby="welcome-heading">
+    <section
+      class="card"
+      aria-labelledby="welcome-heading"
+    >
 
       <h2 class="welcome" id="welcome-heading">
         Make yourself at home.
@@ -265,69 +343,78 @@
         and everything that makes you YOU.
       </p>
 
-      <button
-        class="auth-button"
-        type="button"
-        data-provider="google"
-      >
-        <svg
-          class="provider-icon"
-          viewBox="0 0 48 48"
-          aria-hidden="true"
+      <div id="auth-buttons">
+
+        <button
+          class="auth-button"
+          type="button"
+          data-provider="google"
         >
-          <path fill="#EA4335"
-            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-            transform="translate(0 5)"/>
-          <path fill="#4285F4"
-            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 38.01 46.98 31.82 46.98 24.55z"/>
-          <path fill="#FBBC05"
-            d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.8 23.8 0 0 0 0 24c0 3.85.92 7.5 2.53 10.78l8-6.19z"
-            transform="translate(0 5)"/>
-          <path fill="#34A853"
-            d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.14 1.45-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-            transform="translate(0 -5)"/>
-        </svg>
+          <svg
+            class="provider-icon"
+            viewBox="0 0 48 48"
+            aria-hidden="true"
+          >
+            <path
+              fill="#4285F4"
+              d="M43.6 24.5c0-1.5-.1-3-.4-4.5H24v8.5h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.7c3.9-3.6 6-8.9 6-15.4z"
+            />
+            <path
+              fill="#34A853"
+              d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.2c-1.8 1.2-4.1 2-6.8 2-5.2 0-9.6-3.5-11.2-8.3H5.9v5.4A20 20 0 0 0 24 44z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M12.8 27.6a12 12 0 0 1 0-7.2V15H5.9a20 20 0 0 0 0 18z"
+            />
+            <path
+              fill="#EA4335"
+              d="M24 12.1c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 6.1 29.5 4 24 4A20 20 0 0 0 5.9 15l6.9 5.4c1.6-4.8 6-8.3 11.2-8.3z"
+            />
+          </svg>
 
-        Continue with Google
-      </button>
+          Continue with Google
+        </button>
 
-      <button
-        class="auth-button"
-        type="button"
-        data-provider="apple"
-      >
-        <svg
-          class="provider-icon"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
+        <button
+          class="auth-button"
+          type="button"
+          data-provider="apple"
         >
-          <path
-            fill="currentColor"
-            d="M16.37 12.18c.02 2.17 1.9 2.89 1.92 2.9-.02.05-.3 1.03-.99 2.03-.6.86-1.22 1.72-2.2 1.74-.96.02-1.27-.56-2.37-.56-1.1 0-1.45.54-2.36.58-.95.04-1.67-.94-2.27-1.8-1.23-1.78-2.17-5.03-.91-7.22.62-1.09 1.73-1.78 2.93-1.8.91-.02 1.77.62 2.37.62.59 0 1.7-.77 2.87-.66.49.02 1.87.2 2.76 1.51-.07.04-1.65.96-1.63 2.66zM14.5 5.94c.5-.6.83-1.43.74-2.26-.72.03-1.59.48-2.1 1.08-.46.53-.86 1.37-.75 2.18.8.06 1.61-.41 2.11-1z"
-          />
-        </svg>
+          <svg
+            class="provider-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              fill="currentColor"
+              d="M16.37 12.18c.02 2.17 1.9 2.89 1.92 2.9-.02.05-.3 1.03-.99 2.03-.6.86-1.22 1.72-2.2 1.74-.96.02-1.27-.56-2.37-.56-1.1 0-1.45.54-2.36.58-.95.04-1.67-.94-2.27-1.8-1.23-1.78-2.17-5.03-.91-7.22.62-1.09 1.73-1.78 2.93-1.8.91-.02 1.77.62 2.37.62.59 0 1.7-.77 2.87-.66.49.02 1.87.2 2.76 1.51-.07.04-1.65.96-1.63 2.66zM14.5 5.94c.5-.6.83-1.43.74-2.26-.72.03-1.59.48-2.1 1.08-.46.53-.86 1.37-.75 2.18.8.06 1.61-.41 2.11-1z"
+            />
+          </svg>
 
-        Continue with Apple
-      </button>
+          Continue with Apple
+        </button>
 
-      <button
-        class="auth-button"
-        type="button"
-        data-provider="azure"
-      >
-        <svg
-          class="provider-icon"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
+        <button
+          class="auth-button"
+          type="button"
+          data-provider="azure"
         >
-          <path fill="#F25022" d="M2 2h9v9H2z"/>
-          <path fill="#7FBA00" d="M13 2h9v9h-9z"/>
-          <path fill="#00A4EF" d="M2 13h9v9H2z"/>
-          <path fill="#FFB900" d="M13 13h9v9h-9z"/>
-        </svg>
+          <svg
+            class="provider-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path fill="#F25022" d="M2 2h9v9H2z"/>
+            <path fill="#7FBA00" d="M13 2h9v9h-9z"/>
+            <path fill="#00A4EF" d="M2 13h9v9H2z"/>
+            <path fill="#FFB900" d="M13 13h9v9h-9z"/>
+          </svg>
 
-        Continue with Microsoft
-      </button>
+          Continue with Microsoft
+        </button>
+
+      </div>
 
       <div class="divider">
         YOUR SPACE, YOUR RULES
@@ -345,52 +432,285 @@
         aria-live="polite"
       ></div>
 
+      <div
+        class="account-panel"
+        id="account-panel"
+      >
+        <p class="account-email" id="account-email"></p>
+
+        <button
+          class="signout-button"
+          id="signout-button"
+          type="button"
+        >
+          Sign out
+        </button>
+      </div>
+
     </section>
 
     <p class="footer">
-      Made with <span class="tiny-heart">♡</span> and a little bit of magic.
+      Made with <span class="tiny-heart">♡</span>
+      and a little bit of magic.
       <br>
-      By continuing, you'll be able to review Candlee's
-      <a href="privacy.html">Privacy Policy</a>
-      and
-      <a href="terms.html">Terms of Service</a>
-      when those pages are available.
+      Please review our privacy practices before using
+      Candlee for personal information.
     </p>
 
   </main>
 
-  <script>
-    /*
-      CANDLEE AUTHENTICATION
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
 
-      This page is prepared for Supabase authentication.
+    // ==================================
+    // CANDLEE CONFIGURATION
+    // ==================================
 
-      The buttons will not sign users in until we configure
-      Supabase and the Google, Apple, and Microsoft providers.
+    const SUPABASE_URL =
+      "PASTE_YOUR_PROJECT_URL_HERE";
 
-      We will add the project's public URL and publishable
-      key in our next setup step.
+    const SUPABASE_PUBLISHABLE_KEY =
+      "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
 
-      NEVER put a Supabase service_role key in this page.
-    */
+    const authButtons =
+      document.getElementById("auth-buttons");
 
-    const statusBox = document.getElementById("status");
+    const statusBox =
+      document.getElementById("status");
 
-    document.querySelectorAll("[data-provider]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const provider = button.dataset.provider;
+    const accountPanel =
+      document.getElementById("account-panel");
 
-        statusBox.textContent =
-          "We're getting Candlee ready! " +
-          "The " +
-          (provider === "azure" ? "Microsoft" :
-           provider.charAt(0).toUpperCase() + provider.slice(1)) +
-          " sign-in connection still needs to be configured. " +
-          "We'll connect it next.";
+    const accountEmail =
+      document.getElementById("account-email");
 
-        statusBox.classList.add("visible");
+    const signoutButton =
+      document.getElementById("signout-button");
+
+    let supabase = null;
+
+    // ==================================
+    // STATUS MESSAGES
+    // ==================================
+
+    function showStatus(message, type = "") {
+      statusBox.textContent = message;
+      statusBox.className = "status visible";
+
+      if (type) {
+        statusBox.classList.add(type);
+      }
+    }
+
+    function hideStatus() {
+      statusBox.textContent = "";
+      statusBox.className = "status";
+    }
+
+    function setButtonsDisabled(disabled) {
+      document
+        .querySelectorAll("[data-provider]")
+        .forEach((button) => {
+          button.disabled = disabled;
+        });
+    }
+
+    // ==================================
+    // AUTHENTICATION
+    // ==================================
+
+    async function signIn(provider) {
+      if (!supabase) {
+        showStatus(
+          "Candlee isn't connected yet. " +
+          "Please check the Supabase project URL " +
+          "and publishable key.",
+          "error"
+        );
+
+        return;
+      }
+
+      hideStatus();
+      setButtonsDisabled(true);
+
+      showStatus(
+        "Opening your sign-in page... 🤎"
+      );
+
+      try {
+        const { error } =
+          await supabase.auth.signInWithOAuth({
+            provider: provider,
+
+            options: {
+              redirectTo: window.location.href
+            }
+          });
+
+        if (error) {
+          throw error;
+        }
+
+      } catch (error) {
+        console.error(
+          "Candlee sign-in error:",
+          error
+        );
+
+        showStatus(
+          "We couldn't start sign-in. " +
+          "Please check your provider configuration " +
+          "in Supabase and try again.",
+          "error"
+        );
+
+        setButtonsDisabled(false);
+      }
+    }
+
+    // ==================================
+    // DISPLAY THE SIGNED-IN USER
+    // ==================================
+
+    function displayUser(user) {
+      if (user) {
+        authButtons.style.display = "none";
+        accountPanel.classList.add("visible");
+
+        accountEmail.textContent =
+          "You're signed in as " +
+          (user.email || "a Candlee user") +
+          ". Welcome home! 🤎";
+
+        showStatus(
+          "You're signed in to Candlee! ♡",
+          "success"
+        );
+
+      } else {
+        authButtons.style.display = "block";
+        accountPanel.classList.remove("visible");
+        accountEmail.textContent = "";
+      }
+    }
+
+    // ==================================
+    // START CANDLEE
+    // ==================================
+
+    const configurationMissing =
+      SUPABASE_URL === "PASTE_YOUR_PROJECT_URL_HERE" ||
+      SUPABASE_PUBLISHABLE_KEY ===
+        "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+    if (configurationMissing) {
+      showStatus(
+        "Candlee's sign-in connection is almost ready! " +
+        "We still need to add your Supabase project details."
+      );
+
+    } else {
+      try {
+        supabase = createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+        supabase.auth.onAuthStateChange(
+          (_event, session) => {
+            displayUser(session?.user ?? null);
+          }
+        );
+
+        const { data, error } =
+          await supabase.auth.getSession();
+
+        if (error) {
+          throw error;
+        }
+
+        displayUser(data.session?.user ?? null);
+
+      } catch (error) {
+        console.error(
+          "Candlee setup error:",
+          error
+        );
+
+        showStatus(
+          "We couldn't connect to Supabase. " +
+          "Please check your project details.",
+          "error"
+        );
+      }
+    }
+
+    // ==================================
+    // CONNECT SIGN-IN BUTTONS
+    // ==================================
+
+    document
+      .querySelector('[data-provider="google"]')
+      .addEventListener("click", () => {
+        signIn("google");
       });
-    });
+
+    document
+      .querySelector('[data-provider="apple"]')
+      .addEventListener("click", () => {
+        signIn("apple");
+      });
+
+    document
+      .querySelector('[data-provider="azure"]')
+      .addEventListener("click", () => {
+        signIn("azure");
+      });
+
+    // ==================================
+    // SIGN OUT
+    // ==================================
+
+    signoutButton.addEventListener(
+      "click",
+      async () => {
+        if (!supabase) {
+          return;
+        }
+
+        signoutButton.disabled = true;
+
+        try {
+          const { error } =
+            await supabase.auth.signOut();
+
+          if (error) {
+            throw error;
+          }
+
+          showStatus(
+            "You've signed out. See you soon! ♡",
+            "success"
+          );
+
+        } catch (error) {
+          console.error(
+            "Candlee sign-out error:",
+            error
+          );
+
+          showStatus(
+            "We couldn't sign you out. Please try again.",
+            "error"
+          );
+
+        } finally {
+          signoutButton.disabled = false;
+        }
+      }
+    );
   </script>
 
 </body>
