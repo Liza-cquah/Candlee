@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
 
       <p class="sidebar-caption">YOUR LITTLE CORNER</p>
 
-      <!-- MINI MUSIC PLAYER: MOVED ABOVE NAVIGATION -->
+      <!-- MINI MUSIC PLAYER -->
       <section class="mini-widget music-widget">
 
         <div class="widget-heading">
@@ -50,7 +51,7 @@
           add your favorite playlist
         </p>
 
-        <button class="soft-button full-button" id="add-music-button">
+        <button type="button" class="soft-button full-button" id="add-music-button">
           ＋ Add your music
         </button>
 
@@ -65,11 +66,11 @@
             placeholder="Paste your playlist link..."
           >
 
-          <button class="soft-button full-button" id="save-music-button">
+          <button type="button" class="soft-button full-button" id="save-music-button">
             Add playlist ♡
           </button>
 
-          <button class="text-button full-button" id="cancel-music-button">
+          <button type="button" class="text-button full-button" id="cancel-music-button">
             Cancel
           </button>
 
@@ -83,43 +84,43 @@
       <!-- MAIN NAVIGATION -->
       <nav class="navigation" aria-label="Main navigation">
 
-        <button class="nav-item active" data-page="home">
+        <button type="button" class="nav-item active" data-page="home">
           <span>⌂</span> Home
         </button>
 
-        <button class="nav-item" data-page="study">
+        <button type="button" class="nav-item" data-page="study">
           <span>📚</span> Study Studio
         </button>
 
-        <button class="nav-item" data-page="music">
+        <button type="button" class="nav-item" data-page="music">
           <span>🎧</span> My Music
         </button>
 
-        <button class="nav-item" data-page="goals">
+        <button type="button" class="nav-item" data-page="goals">
           <span>🌷</span> My Goals
         </button>
 
-        <button class="nav-item" data-page="habits">
+        <button type="button" class="nav-item" data-page="habits">
           <span>🌱</span> Habit Garden
         </button>
 
-        <button class="nav-item" data-page="letters">
+        <button type="button" class="nav-item" data-page="letters">
           <span>💌</span> Future Letters
         </button>
 
-        <button class="nav-item" data-page="countdowns">
+        <button type="button" class="nav-item" data-page="countdowns">
           <span>🗓️</span> Countdowns
         </button>
 
-        <button class="nav-item" data-page="budget">
+        <button type="button" class="nav-item" data-page="budget">
           <span>💰</span> My Budget
         </button>
 
-        <button class="nav-item" data-page="messages">
+        <button type="button" class="nav-item" data-page="messages">
           <span>💬</span> Messages
         </button>
 
-        <button class="nav-item" data-page="vision">
+        <button type="button" class="nav-item" data-page="vision">
           <span>✨</span> Vision Board
         </button>
 
@@ -130,7 +131,12 @@
       <!-- MINI STUDY PLAN -->
       <section class="mini-widget study-widget">
 
-        <button class="widget-heading study-widget-toggle" id="study-widget-toggle" aria-expanded="true">
+        <button
+          type="button"
+          class="widget-heading study-widget-toggle"
+          id="study-widget-toggle"
+          aria-expanded="true"
+        >
           <span>📝</span>
           <h3>MY STUDY PLAN</h3>
           <span class="expand-icon" id="expand-icon">⌄</span>
@@ -153,7 +159,7 @@
 
           <div id="mini-task-list" class="mini-task-list"></div>
 
-          <button class="text-button full-button" data-page="study">
+          <button type="button" class="text-button full-button" data-page="study">
             Open Study Studio →
           </button>
 
@@ -182,11 +188,23 @@
 
         <div class="topbar-actions">
 
-          <button class="icon-button" id="sound-toggle" title="Toggle button sounds" aria-label="Toggle button sounds">
+          <button
+            type="button"
+            class="icon-button"
+            id="sound-toggle"
+            title="Toggle button sounds"
+            aria-label="Toggle button sounds"
+          >
             🔊
           </button>
 
-          <button class="icon-button" id="theme-open-button" title="Change theme" aria-label="Change theme">
+          <button
+            type="button"
+            class="icon-button"
+            id="theme-open-button"
+            title="Change theme"
+            aria-label="Change theme"
+          >
             🎨
           </button>
 
@@ -237,7 +255,13 @@
             <p>You don't have to do everything today. Just begin. ♡</p>
           </div>
 
-          <button class="affirmation-refresh" id="new-affirmation" title="New affirmation" aria-label="Show another affirmation">
+          <button
+            type="button"
+            class="affirmation-refresh"
+            id="new-affirmation"
+            title="New affirmation"
+            aria-label="Show another affirmation"
+          >
             ↻
           </button>
 
@@ -257,28 +281,28 @@
 
         <div class="quick-grid">
 
-          <button class="quick-card study-card" data-page="study">
+          <button type="button" class="quick-card study-card" data-page="study">
             <span class="quick-icon">📚</span>
             <span class="quick-title">Study Studio</span>
             <span class="quick-description">little steps toward big goals</span>
             <span class="quick-arrow">↗</span>
           </button>
 
-          <button class="quick-card goals-card" data-page="goals">
+          <button type="button" class="quick-card goals-card" data-page="goals">
             <span class="quick-icon">🌷</span>
             <span class="quick-title">My Goals</span>
             <span class="quick-description">dream it, plan it, do it</span>
             <span class="quick-arrow">↗</span>
           </button>
 
-          <button class="quick-card habits-card" data-page="habits">
+          <button type="button" class="quick-card habits-card" data-page="habits">
             <span class="quick-icon">🌱</span>
             <span class="quick-title">Habit Garden</span>
             <span class="quick-description">grow a little every day</span>
             <span class="quick-arrow">↗</span>
           </button>
 
-          <button class="quick-card letters-card" data-page="letters">
+          <button type="button" class="quick-card letters-card" data-page="letters">
             <span class="quick-icon">💌</span>
             <span class="quick-title">Future Letters</span>
             <span class="quick-description">a little note to future you</span>
@@ -321,7 +345,7 @@
               </div>
             </div>
 
-            <button class="soft-button" data-page="study">
+            <button type="button" class="soft-button" data-page="study">
               Let's study →
             </button>
 
@@ -358,7 +382,9 @@
             </div>
 
             <form id="new-task-form" class="new-task-form">
-              <label class="visually-hidden" for="new-task-input">New study task</label>
+              <label class="visually-hidden" for="new-task-input">
+                New study task
+              </label>
 
               <input
                 type="text"
@@ -391,20 +417,124 @@
             <p class="timer-caption" id="timer-caption">one thing at a time.</p>
 
             <div class="timer-controls">
-              <button class="soft-button" id="timer-start">Start</button>
-              <button class="outline-button" id="timer-reset">Reset</button>
+              <button type="button" class="soft-button" id="timer-start">Start</button>
+              <button type="button" class="outline-button" id="timer-reset">Reset</button>
             </div>
 
             <div class="timer-presets">
-              <button data-minutes="15">15 min</button>
-              <button class="selected" data-minutes="25">25 min</button>
-              <button data-minutes="45">45 min</button>
+              <button type="button" data-minutes="15">15 min</button>
+              <button type="button" class="selected" data-minutes="25">25 min</button>
+              <button type="button" data-minutes="45">45 min</button>
             </div>
 
           </section>
 
         </div>
 
+        <!-- DIGITAL NOTEBOOK -->
+        <section class="content-card notebook-card" id="digital-notebook">
+
+          <div class="notebook-heading">
+            <div>
+              <p class="eyebrow">YOUR LITTLE CORNER OF KNOWLEDGE</p>
+              <h2>the digital notebook <span>✒️</span></h2>
+              <p class="notebook-subtitle">
+                Collect your thoughts, one page at a time.
+              </p>
+            </div>
+
+            <button type="button" class="soft-button" id="notebook-new-page">
+              ＋ New Page
+            </button>
+          </div>
+
+          <label class="visually-hidden" for="notebook-search">
+            Search notebook pages
+          </label>
+
+          <input
+            type="search"
+            id="notebook-search"
+            class="notebook-search"
+            placeholder="Search your pages..."
+          >
+
+          <div class="notebook-layout">
+
+            <aside class="notebook-sidebar">
+              <p class="eyebrow">YOUR PAGES</p>
+              <div id="notebook-page-list" class="notebook-page-list"></div>
+            </aside>
+
+            <div class="notebook-paper" id="notebook-paper">
+              <div class="notebook-paper-inner">
+
+                <p class="notebook-chapter">A NOTE TO REMEMBER</p>
+
+                <label for="notebook-page-subject" class="notebook-field-label">
+                  SUBJECT / COLLECTION
+                </label>
+
+                <input
+                  type="text"
+                  id="notebook-page-subject"
+                  class="notebook-subject"
+                  placeholder="e.g. Biology, Literature, Personal..."
+                  maxlength="80"
+                  disabled
+                >
+
+                <label for="notebook-page-title" class="notebook-field-label">
+                  PAGE TITLE
+                </label>
+
+                <input
+                  type="text"
+                  id="notebook-page-title"
+                  class="notebook-title"
+                  placeholder="Give this page a title..."
+                  maxlength="120"
+                  disabled
+                >
+
+                <label for="notebook-page-body" class="notebook-field-label">
+                  YOUR NOTES
+                </label>
+
+                <textarea
+                  id="notebook-page-body"
+                  class="notebook-writing"
+                  placeholder="Begin wherever your thoughts take you..."
+                  disabled
+                ></textarea>
+
+                <div class="notebook-footer">
+                  <span id="notebook-save-status" aria-live="polite">
+                    Create a page to begin ♡
+                  </span>
+
+                  <button
+                    type="button"
+                    class="outline-button"
+                    id="notebook-delete-page"
+                    disabled
+                  >
+                    Delete Page
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <p class="tiny-note">
+            Your pages save in this browser on this device. ♡
+          </p>
+
+        </section>
+
+        <!-- OTHER STUDY FEATURES -->
         <section class="content-card study-coming-soon">
 
           <p class="eyebrow">MORE GOOD THINGS ARE GROWING</p>
@@ -438,7 +568,7 @@
             Add a Spotify playlist using its link. Candlee will display the official Spotify player.
           </p>
 
-          <button class="soft-button" id="music-page-add">
+          <button type="button" class="soft-button" id="music-page-add">
             ＋ Add a Spotify playlist
           </button>
 
@@ -471,7 +601,15 @@
 
           <form id="goal-form" class="new-task-form">
             <label class="visually-hidden" for="goal-input">New goal</label>
-            <input id="goal-input" type="text" placeholder="What's something you want to achieve?" maxlength="160" required>
+
+            <input
+              id="goal-input"
+              type="text"
+              placeholder="What's something you want to achieve?"
+              maxlength="160"
+              required
+            >
+
             <button class="soft-button" type="submit">＋ Add goal</button>
           </form>
 
@@ -495,8 +633,18 @@
           <h2>Today's habits</h2>
 
           <form id="habit-form" class="new-task-form">
-            <label class="visually-hidden" for="habit-input">New daily habit</label>
-            <input id="habit-input" type="text" placeholder="A habit you want to build..." maxlength="120" required>
+            <label class="visually-hidden" for="habit-input">
+              New daily habit
+            </label>
+
+            <input
+              id="habit-input"
+              type="text"
+              placeholder="A habit you want to build..."
+              maxlength="120"
+              required
+            >
+
             <button class="soft-button" type="submit">＋ Add habit</button>
           </form>
 
@@ -522,13 +670,25 @@
           <form id="letter-form" class="stacked-form">
 
             <label for="letter-title">Letter title</label>
-            <input id="letter-title" type="text" maxlength="100" placeholder="Dear future me..." required>
+            <input
+              id="letter-title"
+              type="text"
+              maxlength="100"
+              placeholder="Dear future me..."
+              required
+            >
 
             <label for="letter-date">When should it open?</label>
             <input id="letter-date" type="date" required>
 
             <label for="letter-body">Your letter</label>
-            <textarea id="letter-body" rows="6" maxlength="5000" placeholder="Write anything your heart needs to say..." required></textarea>
+            <textarea
+              id="letter-body"
+              rows="6"
+              maxlength="5000"
+              placeholder="Write anything your heart needs to say..."
+              required
+            ></textarea>
 
             <button type="submit" class="soft-button">Seal my letter 💌</button>
 
@@ -560,10 +720,22 @@
           <h2>Something to look forward to</h2>
 
           <form id="countdown-form" class="new-task-form">
-            <label class="visually-hidden" for="countdown-title">Countdown title</label>
-            <input id="countdown-title" type="text" placeholder="Exam, birthday, appointment..." maxlength="100" required>
+            <label class="visually-hidden" for="countdown-title">
+              Countdown title
+            </label>
 
-            <label class="visually-hidden" for="countdown-date">Countdown date</label>
+            <input
+              id="countdown-title"
+              type="text"
+              placeholder="Exam, birthday, appointment..."
+              maxlength="100"
+              required
+            >
+
+            <label class="visually-hidden" for="countdown-date">
+              Countdown date
+            </label>
+
             <input id="countdown-date" type="datetime-local" required>
 
             <button type="submit" class="soft-button">＋ Add</button>
@@ -603,8 +775,19 @@
           </div>
 
           <form id="budget-goal-form" class="new-task-form">
-            <label class="visually-hidden" for="budget-goal-input">Savings goal in dollars</label>
-            <input id="budget-goal-input" type="number" min="0" step="0.01" placeholder="Set savings goal ($)" required>
+            <label class="visually-hidden" for="budget-goal-input">
+              Savings goal in dollars
+            </label>
+
+            <input
+              id="budget-goal-input"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="Set savings goal ($)"
+              required
+            >
+
             <button class="soft-button" type="submit">Set goal</button>
           </form>
 
@@ -613,13 +796,35 @@
           </div>
 
           <form id="budget-entry-form" class="new-task-form budget-entry-form">
-            <label class="visually-hidden" for="budget-entry-name">Transaction description</label>
-            <input id="budget-entry-name" type="text" placeholder="What did you save or spend?" maxlength="120" required>
+            <label class="visually-hidden" for="budget-entry-name">
+              Transaction description
+            </label>
 
-            <label class="visually-hidden" for="budget-entry-amount">Transaction amount</label>
-            <input id="budget-entry-amount" type="number" min="0.01" step="0.01" placeholder="Amount ($)" required>
+            <input
+              id="budget-entry-name"
+              type="text"
+              placeholder="What did you save or spend?"
+              maxlength="120"
+              required
+            >
 
-            <label class="visually-hidden" for="budget-entry-type">Transaction type</label>
+            <label class="visually-hidden" for="budget-entry-amount">
+              Transaction amount
+            </label>
+
+            <input
+              id="budget-entry-amount"
+              type="number"
+              min="0.01"
+              step="0.01"
+              placeholder="Amount ($)"
+              required
+            >
+
+            <label class="visually-hidden" for="budget-entry-type">
+              Transaction type
+            </label>
+
             <select id="budget-entry-type">
               <option value="income">Saved / earned</option>
               <option value="expense">Spent</option>
@@ -684,10 +889,21 @@
           <form id="vision-form" class="stacked-form">
 
             <label for="vision-title">Dream or intention</label>
-            <input id="vision-title" type="text" maxlength="120" placeholder="My dream life includes..." required>
+            <input
+              id="vision-title"
+              type="text"
+              maxlength="120"
+              placeholder="My dream life includes..."
+              required
+            >
 
             <label for="vision-note">A little description</label>
-            <textarea id="vision-note" rows="3" maxlength="500" placeholder="Why does this matter to me?"></textarea>
+            <textarea
+              id="vision-note"
+              rows="3"
+              maxlength="500"
+              placeholder="Why does this matter to me?"
+            ></textarea>
 
             <button type="submit" class="soft-button">＋ Add to my board</button>
 
@@ -702,7 +918,12 @@
       <!-- THEME MODAL -->
       <div class="modal-backdrop" id="theme-modal" hidden>
 
-        <section class="theme-modal" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
+        <section
+          class="theme-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="theme-modal-title"
+        >
 
           <div class="modal-heading">
             <div>
@@ -710,42 +931,49 @@
               <h2 id="theme-modal-title">Choose your vibe 🎨</h2>
             </div>
 
-            <button class="icon-button" id="theme-close-button" aria-label="Close theme chooser">×</button>
+            <button
+              type="button"
+              class="icon-button"
+              id="theme-close-button"
+              aria-label="Close theme chooser"
+            >
+              ×
+            </button>
           </div>
 
           <div class="theme-grid">
 
-            <button class="theme-choice" data-theme-choice="pink">
+            <button type="button" class="theme-choice" data-theme-choice="pink">
               <span class="theme-swatch pink-swatch"></span>
               <span>Cotton Candy</span>
             </button>
 
-            <button class="theme-choice" data-theme-choice="cream">
+            <button type="button" class="theme-choice" data-theme-choice="cream">
               <span class="theme-swatch cream-swatch"></span>
               <span>Cloud Nine</span>
             </button>
 
-            <button class="theme-choice" data-theme-choice="burgundy">
+            <button type="button" class="theme-choice" data-theme-choice="burgundy">
               <span class="theme-swatch burgundy-swatch"></span>
               <span>Cherry Cola</span>
             </button>
 
-            <button class="theme-choice" data-theme-choice="navy">
+            <button type="button" class="theme-choice" data-theme-choice="navy">
               <span class="theme-swatch navy-swatch"></span>
               <span>Midnight</span>
             </button>
 
-            <button class="theme-choice" data-theme-choice="yellow">
+            <button type="button" class="theme-choice" data-theme-choice="yellow">
               <span class="theme-swatch yellow-swatch"></span>
               <span>Lemon Drop</span>
             </button>
 
-            <button class="theme-choice" data-theme-choice="brown">
+            <button type="button" class="theme-choice" data-theme-choice="brown">
               <span class="theme-swatch brown-swatch"></span>
               <span>Teddy Bear</span>
             </button>
 
-            <button class="theme-choice" data-theme-choice="lavender">
+            <button type="button" class="theme-choice" data-theme-choice="lavender">
               <span class="theme-swatch lavender-swatch"></span>
               <span>Lavender Haze</span>
             </button>
@@ -760,6 +988,7 @@
 
   </div>
 
+  <!-- KEEP THE EXISTING JAVASCRIPT FILE -->
   <script src="script.js" defer></script>
 
 </body>
