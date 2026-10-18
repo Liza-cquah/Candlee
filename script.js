@@ -1,4 +1,3 @@
-```javascript
 /* =========================================
    CANDLEE ♡
    Interactive features
@@ -46,9 +45,11 @@ const state = {
 function saveData() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch (error) {
-    showToast("Your browser couldn't save this change.");
     console.error("Could not save Candlee data:", error);
+    showToast("Your browser couldn't save this change.");
+    return false;
   }
 }
 
@@ -60,7 +61,6 @@ let toastTimeout;
 
 function showToast(message) {
   const toast = $("#toast");
-
   if (!toast) return;
 
   toast.textContent = message;
@@ -88,9 +88,7 @@ function playClickSound() {
 
     if (!AudioContextClass) return;
 
-    if (!audioContext) {
-      audioContext = new AudioContextClass();
-    }
+    if (!audioContext) audioContext = new AudioContextClass();
 
     if (audioContext.state === "suspended") {
       audioContext.resume();
@@ -122,68 +120,58 @@ function playClickSound() {
     oscillator.start();
     oscillator.stop(audioContext.currentTime + 0.055);
   } catch (error) {
-    // The website remains usable if browser audio is unavailable.
+    // Audio is optional. Candlee should still work without it.
   }
 }
 
 document.addEventListener("click", (event) => {
-  if (event.target.closest("button")) {
-    playClickSound();
-  }
+  if (event.target.closest("button")) playClickSound();
 });
 
 function updateSoundButton() {
   const button = $("#sound-toggle");
-
   if (!button) return;
 
   button.textContent = state.soundsEnabled ? "🔊" : "🔇";
-
   button.setAttribute(
     "aria-label",
     state.soundsEnabled ? "Mute button sounds" : "Enable button sounds"
   );
-
   button.title = state.soundsEnabled
     ? "Mute button sounds"
     : "Enable button sounds";
 }
 
-$("#sound-toggle").addEventListener("click", () => {
-  state.soundsEnabled = !state.soundsEnabled;
-  saveData();
-  updateSoundButton();
+const soundToggle = $("#sound-toggle");
 
-  showToast(
-    state.soundsEnabled
-      ? "Button sounds are on ♡"
-      : "Button sounds are off ♡"
-  );
-});
+if (soundToggle) {
+  soundToggle.addEventListener("click", () => {
+    state.soundsEnabled = !state.soundsEnabled;
+    saveData();
+    updateSoundButton();
+
+    showToast(
+      state.soundsEnabled
+        ? "Button sounds are on ♡"
+        : "Button sounds are off ♡"
+    );
+  });
+}
 
 /* -----------------------------------------
    THEMES
    ----------------------------------------- */
 
 const validThemes = [
-  "pink",
-  "cream",
-  "burgundy",
-  "navy",
-  "yellow",
-  "brown",
-  "lavender",
-  "dark"
+  "pink", "cream", "burgundy", "navy",
+  "yellow", "brown", "lavender", "dark"
 ];
 
 function applyTheme(theme) {
-  if (!validThemes.includes(theme)) {
-    theme = "pink";
-  }
+  if (!validThemes.includes(theme)) theme = "pink";
 
   state.theme = theme;
   document.body.dataset.theme = theme;
-
   saveData();
 
   $$(".theme-choice").forEach((button) => {
@@ -197,26 +185,25 @@ function applyTheme(theme) {
 const themeModal = $("#theme-modal");
 
 function openThemeModal() {
+  if (!themeModal) return;
+
   themeModal.hidden = false;
-
   const firstChoice = $(".theme-choice");
-
   if (firstChoice) firstChoice.focus();
 }
 
 function closeThemeModal() {
+  if (!themeModal) return;
+
   themeModal.hidden = true;
-  $("#theme-open-button").focus();
+  $("#theme-open-button")?.focus();
 }
 
-$("#theme-open-button").addEventListener("click", openThemeModal);
+$("#theme-open-button")?.addEventListener("click", openThemeModal);
+$("#theme-close-button")?.addEventListener("click", closeThemeModal);
 
-$("#theme-close-button").addEventListener("click", closeThemeModal);
-
-themeModal.addEventListener("click", (event) => {
-  if (event.target === themeModal) {
-    closeThemeModal();
-  }
+themeModal?.addEventListener("click", (event) => {
+  if (event.target === themeModal) closeThemeModal();
 });
 
 $$(".theme-choice").forEach((button) => {
@@ -239,7 +226,7 @@ $$(".theme-choice").forEach((button) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !themeModal.hidden) {
+  if (event.key === "Escape" && themeModal && !themeModal.hidden) {
     closeThemeModal();
   }
 });
@@ -263,18 +250,13 @@ const pageNames = {
 
 function navigateTo(pageName) {
   const targetPage = $(`#page-${pageName}`);
-
   if (!targetPage) return;
 
-  $$(".page").forEach((page) => {
-    page.classList.remove("active-page");
-  });
-
+  $$(".page").forEach((page) => page.classList.remove("active-page"));
   targetPage.classList.add("active-page");
 
   $$(".nav-item").forEach((button) => {
     const active = button.dataset.page === pageName;
-
     button.classList.toggle("active", active);
 
     if (active) {
@@ -284,23 +266,19 @@ function navigateTo(pageName) {
     }
   });
 
-  $("#current-section").textContent = pageNames[pageName] || pageName;
-
-  if (pageName === "music") {
-    renderMusicPage();
+  const sectionLabel = $("#current-section");
+  if (sectionLabel) {
+    sectionLabel.textContent = pageNames[pageName] || pageName;
   }
 
-  if (pageName === "study") {
-    renderStudyTasks();
-  }
+  if (pageName === "music") renderMusicPage();
+  if (pageName === "study") renderStudyTasks();
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 $$("[data-page]").forEach((button) => {
-  button.addEventListener("click", () => {
-    navigateTo(button.dataset.page);
-  });
+  button.addEventListener("click", () => navigateTo(button.dataset.page));
 });
 
 /* -----------------------------------------
@@ -323,17 +301,21 @@ const affirmations = [
 ];
 
 function renderAffirmation() {
-  $("#affirmation-text").textContent =
-    affirmations[state.affirmationIndex % affirmations.length];
+  const text = $("#affirmation-text");
+  if (text) {
+    text.textContent =
+      affirmations[state.affirmationIndex % affirmations.length];
+  }
 }
 
-$("#new-affirmation").addEventListener("click", () => {
-  if (affirmations.length > 1) {
-    const previousIndex = state.affirmationIndex;
+$("#new-affirmation")?.addEventListener("click", () => {
+  const previousIndex = state.affirmationIndex;
 
+  if (affirmations.length > 1) {
     while (state.affirmationIndex === previousIndex) {
-      state.affirmationIndex =
-        Math.floor(Math.random() * affirmations.length);
+      state.affirmationIndex = Math.floor(
+        Math.random() * affirmations.length
+      );
     }
   }
 
@@ -343,8 +325,6 @@ $("#new-affirmation").addEventListener("click", () => {
 
 /* -----------------------------------------
    SHARED STUDY CHECKLIST
-   The sidebar and Study Studio use the same
-   state.studyTasks array.
    ----------------------------------------- */
 
 function makeId() {
@@ -356,27 +336,20 @@ function makeId() {
 }
 
 function createTask(text) {
-  return {
-    id: makeId(),
-    text,
-    completed: false
-  };
+  return { id: makeId(), text, completed: false };
 }
 
 function toggleStudyTask(id) {
   const task = state.studyTasks.find((item) => item.id === id);
-
   if (!task) return;
 
   task.completed = !task.completed;
-
   saveData();
   renderStudyTasks();
 }
 
 function deleteStudyTask(id) {
   state.studyTasks = state.studyTasks.filter((item) => item.id !== id);
-
   saveData();
   renderStudyTasks();
 }
@@ -385,43 +358,37 @@ function createTaskCheckbox(task, className) {
   const label = document.createElement("label");
   label.className = className;
 
-  if (task.completed) {
-    label.classList.add("completed");
-  }
+  if (task.completed) label.classList.add("completed");
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = task.completed;
   checkbox.setAttribute("aria-label", `Complete ${task.text}`);
 
-  checkbox.addEventListener("change", () => {
-    toggleStudyTask(task.id);
-  });
+  checkbox.addEventListener("change", () => toggleStudyTask(task.id));
 
   const text = document.createElement("span");
   text.textContent = task.text;
 
   label.append(checkbox, text);
-
   return label;
 }
 
 function createDeleteButton(onClick) {
   const button = document.createElement("button");
-
   button.type = "button";
   button.className = "delete-button";
   button.textContent = "×";
   button.setAttribute("aria-label", "Delete item");
-
   button.addEventListener("click", onClick);
-
   return button;
 }
 
 function renderStudyTasks() {
   const miniList = $("#mini-task-list");
   const fullList = $("#full-task-list");
+
+  if (!miniList || !fullList) return;
 
   miniList.replaceChildren();
   fullList.replaceChildren();
@@ -431,28 +398,32 @@ function renderStudyTasks() {
   ).length;
 
   const totalCount = state.studyTasks.length;
-
   const progress = totalCount
     ? Math.round((completedCount / totalCount) * 100)
     : 0;
 
-  $("#mini-progress-text").textContent = `${progress}%`;
-  $("#mini-progress-fill").style.width = `${progress}%`;
-
-  $("#home-progress-text").textContent = `${progress}%`;
-  $("#home-progress-fill").style.width = `${progress}%`;
-
-  $("#home-task-count").textContent =
-    `${completedCount}/${totalCount}`;
+  if ($("#mini-progress-text")) {
+    $("#mini-progress-text").textContent = `${progress}%`;
+  }
+  if ($("#mini-progress-fill")) {
+    $("#mini-progress-fill").style.width = `${progress}%`;
+  }
+  if ($("#home-progress-text")) {
+    $("#home-progress-text").textContent = `${progress}%`;
+  }
+  if ($("#home-progress-fill")) {
+    $("#home-progress-fill").style.width = `${progress}%`;
+  }
+  if ($("#home-task-count")) {
+    $("#home-task-count").textContent = `${completedCount}/${totalCount}`;
+  }
 
   if (totalCount === 0) {
     const empty = document.createElement("p");
     empty.className = "empty-message";
     empty.textContent = "A fresh page! Add a little task ♡";
-
     miniList.append(empty.cloneNode(true));
     fullList.append(empty);
-
     return;
   }
 
@@ -462,41 +433,37 @@ function renderStudyTasks() {
     const row = document.createElement("div");
     row.className = "full-task";
 
-    const label = createTaskCheckbox(task, "full-task-label");
+    row.append(
+      createTaskCheckbox(task, "full-task-label"),
+      createDeleteButton(() => deleteStudyTask(task.id))
+    );
 
-    const deleteButton = createDeleteButton(() => {
-      deleteStudyTask(task.id);
-    });
-
-    row.append(label, deleteButton);
     fullList.append(row);
   });
 }
 
-$("#new-task-form").addEventListener("submit", (event) => {
+$("#new-task-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const input = $("#new-task-input");
-  const text = input.value.trim();
+  if (!input) return;
 
+  const text = input.value.trim();
   if (!text) return;
 
   state.studyTasks.push(createTask(text));
-
   input.value = "";
 
   saveData();
   renderStudyTasks();
-
   showToast("A little task added ♡");
 });
 
-/* Expand and collapse the mini study plan. */
-
-$("#study-widget-toggle").addEventListener("click", () => {
+$("#study-widget-toggle")?.addEventListener("click", () => {
   const content = $("#mini-study-content");
-  const currentlyExpanded = !content.hidden;
+  if (!content) return;
 
+  const currentlyExpanded = !content.hidden;
   content.hidden = currentlyExpanded;
 
   $("#study-widget-toggle").setAttribute(
@@ -504,7 +471,9 @@ $("#study-widget-toggle").addEventListener("click", () => {
     String(!currentlyExpanded)
   );
 
-  $("#expand-icon").textContent = currentlyExpanded ? "⌄" : "⌃";
+  if ($("#expand-icon")) {
+    $("#expand-icon").textContent = currentlyExpanded ? "⌄" : "⌃";
+  }
 });
 
 /* -----------------------------------------
@@ -525,12 +494,12 @@ function formatTime(seconds) {
 }
 
 function renderTimer() {
-  $("#timer-display").textContent = formatTime(timerRemaining);
+  const display = $("#timer-display");
+  if (display) display.textContent = formatTime(timerRemaining);
 
-  document.title =
-    timerInterval
-      ? `${formatTime(timerRemaining)} · Candlee ♡`
-      : "Candlee ♡ A Little Light for Your Everyday";
+  document.title = timerInterval
+    ? `${formatTime(timerRemaining)} · Candlee ♡`
+    : "Candlee ♡ A Little Light for Your Everyday";
 }
 
 function stopTimer() {
@@ -539,20 +508,20 @@ function stopTimer() {
     timerInterval = null;
   }
 
-  $("#timer-start").textContent = "Start";
+  if ($("#timer-start")) $("#timer-start").textContent = "Start";
 }
 
 function startTimer() {
   if (timerInterval !== null) {
     stopTimer();
-    $("#timer-caption").textContent = "take a little breath ♡";
+    if ($("#timer-caption")) {
+      $("#timer-caption").textContent = "take a little breath ♡";
+    }
     renderTimer();
     return;
   }
 
-  if (timerRemaining <= 0) {
-    timerRemaining = timerDuration;
-  }
+  if (timerRemaining <= 0) timerRemaining = timerDuration;
 
   timerInterval = setInterval(() => {
     timerRemaining -= 1;
@@ -560,25 +529,34 @@ function startTimer() {
     if (timerRemaining <= 0) {
       timerRemaining = 0;
       stopTimer();
-      $("#timer-caption").textContent = "you did it! time for a little break ✨";
+
+      if ($("#timer-caption")) {
+        $("#timer-caption").textContent =
+          "you did it! time for a little break ✨";
+      }
+
       showToast("Focus session complete! You did amazing ♡");
     }
 
     renderTimer();
   }, 1000);
 
-  $("#timer-start").textContent = "Pause";
-  $("#timer-caption").textContent = "you've got this ♡";
+  if ($("#timer-start")) $("#timer-start").textContent = "Pause";
+  if ($("#timer-caption")) $("#timer-caption").textContent = "you've got this ♡";
 
   renderTimer();
 }
 
-$("#timer-start").addEventListener("click", startTimer);
+$("#timer-start")?.addEventListener("click", startTimer);
 
-$("#timer-reset").addEventListener("click", () => {
+$("#timer-reset")?.addEventListener("click", () => {
   stopTimer();
   timerRemaining = timerDuration;
-  $("#timer-caption").textContent = "one thing at a time.";
+
+  if ($("#timer-caption")) {
+    $("#timer-caption").textContent = "one thing at a time.";
+  }
+
   renderTimer();
 });
 
@@ -593,32 +571,25 @@ $$(".timer-presets button").forEach((button) => {
       preset.classList.toggle("selected", preset === button);
     });
 
-    $("#timer-caption").textContent = "one thing at a time.";
+    if ($("#timer-caption")) {
+      $("#timer-caption").textContent = "one thing at a time.";
+    }
 
     renderTimer();
   });
 });
 
 /* -----------------------------------------
-   SPOTIFY PLAYLIST EMBED
+   SPOTIFY MUSIC PLAYER
    ----------------------------------------- */
 
 function getSpotifyEmbedUrl(rawUrl) {
   try {
     const url = new URL(rawUrl);
+    const host = url.hostname.toLowerCase();
 
-    const allowedHosts = [
-      "open.spotify.com",
-      "spotify.link"
-    ];
-
-    if (!allowedHosts.includes(url.hostname.toLowerCase())) {
-      return null;
-    }
-
-    if (url.hostname.toLowerCase() === "spotify.link") {
-      return null;
-    }
+    // Shortened spotify.link URLs must be expanded first.
+    if (host !== "open.spotify.com") return null;
 
     const match = url.pathname.match(
       /^\/(playlist|album|track|artist|show|episode)\/([a-zA-Z0-9]+)\/?$/
@@ -626,54 +597,69 @@ function getSpotifyEmbedUrl(rawUrl) {
 
     if (!match) return null;
 
-    const type = match[1];
-    const id = match[2];
-
-    return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator`;
+    return `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator`;
   } catch (error) {
     return null;
   }
 }
 
+function createSpotifyFrame(embedUrl) {
+  const frame = document.createElement("iframe");
+
+  frame.src = embedUrl;
+  frame.title = "Spotify music player";
+  frame.loading = "lazy";
+  frame.width = "100%";
+  frame.height = "152";
+  frame.style.border = "0";
+  frame.setAttribute("allowfullscreen", "");
+  frame.allow =
+    "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+  frame.referrerPolicy = "strict-origin-when-cross-origin";
+
+  return frame;
+}
+
 function renderMusicEmbeds() {
   const sidebarEmbed = $("#music-embed");
   const pageEmbed = $("#music-page-embed");
+  const playlistName = $("#playlist-name");
+  const playlistDescription = $("#playlist-description");
 
-  sidebarEmbed.replaceChildren();
-  pageEmbed.replaceChildren();
+  if (sidebarEmbed) sidebarEmbed.replaceChildren();
+  if (pageEmbed) pageEmbed.replaceChildren();
 
   if (!state.playlist) {
-    $("#playlist-name").textContent = "Your happy place";
-    $("#playlist-description").textContent = "add your favorite playlist";
+    if (playlistName) playlistName.textContent = "Your happy place";
+    if (playlistDescription) {
+      playlistDescription.textContent = "add your favorite playlist";
+    }
     return;
   }
 
   const embedUrl = getSpotifyEmbedUrl(state.playlist);
 
   if (!embedUrl) {
-    $("#playlist-name").textContent = "Playlist not added";
-    $("#playlist-description").textContent = "check your Spotify link";
+    if (playlistName) playlistName.textContent = "Playlist not added";
+    if (playlistDescription) {
+      playlistDescription.textContent =
+        "Use a full link from open.spotify.com";
+    }
     return;
   }
 
-  $("#playlist-name").textContent = "Your Spotify playlist ♡";
-  $("#playlist-description").textContent = "a soundtrack for your day";
-
-  function createSpotifyFrame() {
-    const frame = document.createElement("iframe");
-
-    frame.src = embedUrl;
-    frame.title = "Spotify music player";
-    frame.loading = "lazy";
-    frame.allow =
-      "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-    frame.referrerPolicy = "strict-origin-when-cross-origin";
-
-    return frame;
+  if (playlistName) playlistName.textContent = "Your Spotify playlist ♡";
+  if (playlistDescription) {
+    playlistDescription.textContent = "a soundtrack for your day";
   }
 
-  sidebarEmbed.append(createSpotifyFrame());
-  pageEmbed.append(createSpotifyFrame());
+  if (sidebarEmbed) {
+    sidebarEmbed.append(createSpotifyFrame(embedUrl));
+  }
+
+  if (pageEmbed) {
+    pageEmbed.append(createSpotifyFrame(embedUrl));
+  }
 }
 
 function renderMusicPage() {
@@ -681,42 +667,65 @@ function renderMusicPage() {
 }
 
 function openMusicSettings() {
-  $("#music-settings").hidden = false;
-  $("#spotify-link").value = state.playlist;
-  $("#spotify-link").focus();
+  const settings = $("#music-settings");
+  const input = $("#spotify-link");
+
+  if (!settings || !input) {
+    showToast("The music form is missing from this page. Please refresh ♡");
+    return;
+  }
+
+  settings.hidden = false;
+  input.value = state.playlist;
+  input.focus();
 }
 
 function closeMusicSettings() {
-  $("#music-settings").hidden = true;
+  const settings = $("#music-settings");
+  if (settings) settings.hidden = true;
 }
 
-$("#add-music-button").addEventListener("click", openMusicSettings);
-$("#music-page-add").addEventListener("click", openMusicSettings);
+$("#add-music-button")?.addEventListener("click", openMusicSettings);
+$("#music-page-add")?.addEventListener("click", openMusicSettings);
+$("#cancel-music-button")?.addEventListener("click", closeMusicSettings);
 
-$("#cancel-music-button").addEventListener("click", closeMusicSettings);
+$("#save-music-button")?.addEventListener("click", () => {
+  const input = $("#spotify-link");
 
-$("#save-music-button").addEventListener("click", () => {
-  const rawUrl = $("#spotify-link").value.trim();
+  if (!input) {
+    showToast("The playlist input could not be found ♡");
+    return;
+  }
+
+  const rawUrl = input.value.trim();
 
   if (!rawUrl) {
     showToast("Paste a Spotify link first ♡");
+    input.focus();
     return;
   }
 
   const embedUrl = getSpotifyEmbedUrl(rawUrl);
 
   if (!embedUrl) {
-    showToast("Please use a full Spotify playlist, album, track, or show link.");
+    showToast(
+      "Please paste a full Spotify playlist, album, track, or show link from open.spotify.com."
+    );
+    input.focus();
     return;
   }
 
   state.playlist = rawUrl;
 
-  saveData();
+  const saved = saveData();
   renderMusicEmbeds();
   closeMusicSettings();
 
-  showToast("Your music is ready ♡");
+  showToast(
+    saved
+      ? "Your music is ready ♡"
+      : "Your music is showing, but your browser couldn't save it."
+  );
 });
 
 /* -----------------------------------------
@@ -725,6 +734,8 @@ $("#save-music-button").addEventListener("click", () => {
 
 function renderGoals() {
   const list = $("#goal-list");
+  if (!list) return;
+
   list.replaceChildren();
 
   if (state.goals.length === 0) {
@@ -755,35 +766,34 @@ function renderGoals() {
       text.style.opacity = "0.7";
     }
 
-    row.append(checkbox, text, createDeleteButton(() => {
-      state.goals = state.goals.filter((item) => item.id !== goal.id);
-      saveData();
-      renderGoals();
-    }));
+    row.append(
+      checkbox,
+      text,
+      createDeleteButton(() => {
+        state.goals = state.goals.filter((item) => item.id !== goal.id);
+        saveData();
+        renderGoals();
+      })
+    );
 
     list.append(row);
   });
 }
 
-$("#goal-form").addEventListener("submit", (event) => {
+$("#goal-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const input = $("#goal-input");
-  const text = input.value.trim();
+  if (!input) return;
 
+  const text = input.value.trim();
   if (!text) return;
 
-  state.goals.push({
-    id: makeId(),
-    text,
-    completed: false
-  });
-
+  state.goals.push({ id: makeId(), text, completed: false });
   input.value = "";
 
   saveData();
   renderGoals();
-
   showToast("A new dream added to your list ♡");
 });
 
@@ -803,11 +813,13 @@ function todayKey() {
 
 function renderHabits() {
   const list = $("#habit-list");
+  if (!list) return;
+
   list.replaceChildren();
 
   const today = todayKey();
 
-  if (!state.completedHabits[today]) {
+  if (!Array.isArray(state.completedHabits[today])) {
     state.completedHabits[today] = [];
   }
 
@@ -822,21 +834,16 @@ function renderHabits() {
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-
     checkbox.checked = state.completedHabits[today].includes(habit.id);
     checkbox.setAttribute("aria-label", `Complete habit: ${habit.text}`);
 
-    if (checkbox.checked) {
-      row.classList.add("completed");
-    }
+    if (checkbox.checked) row.classList.add("completed");
 
     checkbox.addEventListener("change", () => {
       const completed = state.completedHabits[today];
 
       if (checkbox.checked) {
-        if (!completed.includes(habit.id)) {
-          completed.push(habit.id);
-        }
+        if (!completed.includes(habit.id)) completed.push(habit.id);
       } else {
         state.completedHabits[today] = completed.filter(
           (id) => id !== habit.id
@@ -850,55 +857,57 @@ function renderHabits() {
     const text = document.createElement("span");
     text.textContent = habit.text;
 
-    row.append(checkbox, text, createDeleteButton(() => {
-      state.habits = state.habits.filter((item) => item.id !== habit.id);
+    row.append(
+      checkbox,
+      text,
+      createDeleteButton(() => {
+        state.habits = state.habits.filter((item) => item.id !== habit.id);
 
-      Object.keys(state.completedHabits).forEach((date) => {
-        state.completedHabits[date] =
-          state.completedHabits[date].filter((id) => id !== habit.id);
-      });
+        Object.keys(state.completedHabits).forEach((date) => {
+          state.completedHabits[date] =
+            state.completedHabits[date].filter((id) => id !== habit.id);
+        });
 
-      saveData();
-      renderHabits();
-    }));
+        saveData();
+        renderHabits();
+      })
+    );
 
     list.append(row);
   });
 }
 
-$("#habit-form").addEventListener("submit", (event) => {
+$("#habit-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const input = $("#habit-input");
-  const text = input.value.trim();
+  if (!input) return;
 
+  const text = input.value.trim();
   if (!text) return;
 
-  state.habits.push({
-    id: makeId(),
-    text
-  });
-
+  state.habits.push({ id: makeId(), text });
   input.value = "";
 
   saveData();
   renderHabits();
-
   showToast("A little habit planted 🌱");
 });
 
 /* -----------------------------------------
    FUTURE LETTERS
-   IMPORTANT: Local browser hiding only.
-   This is not secure date-based locking.
    ----------------------------------------- */
 
 function renderLetters() {
   const list = $("#letter-list");
+  if (!list) return;
+
   list.replaceChildren();
 
   if (state.letters.length === 0) {
-    list.append(makeEmptyMessage("Your future self is waiting for a little letter ♡"));
+    list.append(
+      makeEmptyMessage("Your future self is waiting for a little letter ♡")
+    );
     return;
   }
 
@@ -907,7 +916,6 @@ function renderLetters() {
     row.className = "letter-item";
 
     const content = document.createElement("div");
-
     const title = document.createElement("strong");
     title.textContent = letter.title;
 
@@ -917,9 +925,7 @@ function renderLetters() {
     const status = document.createElement("span");
     status.className = "letter-status";
 
-    const today = todayKey();
-
-    if (letter.openDate <= today) {
+    if (letter.openDate <= todayKey()) {
       status.textContent = "Ready to open ♡";
 
       const openButton = document.createElement("button");
@@ -928,14 +934,15 @@ function renderLetters() {
       openButton.textContent = "Read letter";
 
       openButton.addEventListener("click", () => {
-        const letterBody = document.createElement("div");
-        letterBody.className = "letter-content";
-        letterBody.textContent = letter.body;
+        const existing = content.querySelector(".letter-content");
 
-        if (content.querySelector(".letter-content")) {
-          content.querySelector(".letter-content").remove();
+        if (existing) {
+          existing.remove();
           openButton.textContent = "Read letter";
         } else {
+          const letterBody = document.createElement("div");
+          letterBody.className = "letter-content";
+          letterBody.textContent = letter.body;
           content.append(letterBody);
           openButton.textContent = "Close letter";
         }
@@ -947,22 +954,25 @@ function renderLetters() {
       content.append(title, date, status);
     }
 
-    row.append(content, createDeleteButton(() => {
-      state.letters = state.letters.filter((item) => item.id !== letter.id);
-      saveData();
-      renderLetters();
-    }));
+    row.append(
+      content,
+      createDeleteButton(() => {
+        state.letters = state.letters.filter((item) => item.id !== letter.id);
+        saveData();
+        renderLetters();
+      })
+    );
 
     list.append(row);
   });
 }
 
-$("#letter-form").addEventListener("submit", (event) => {
+$("#letter-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const title = $("#letter-title").value.trim();
-  const openDate = $("#letter-date").value;
-  const body = $("#letter-body").value.trim();
+  const title = $("#letter-title")?.value.trim();
+  const openDate = $("#letter-date")?.value;
+  const body = $("#letter-body")?.value.trim();
 
   if (!title || !openDate || !body) return;
 
@@ -971,12 +981,7 @@ $("#letter-form").addEventListener("submit", (event) => {
     return;
   }
 
-  state.letters.push({
-    id: makeId(),
-    title,
-    openDate,
-    body
-  });
+  state.letters.push({ id: makeId(), title, openDate, body });
 
   $("#letter-title").value = "";
   $("#letter-date").value = "";
@@ -984,7 +989,6 @@ $("#letter-form").addEventListener("submit", (event) => {
 
   saveData();
   renderLetters();
-
   showToast("Your letter has been sealed 💌");
 });
 
@@ -994,6 +998,8 @@ $("#letter-form").addEventListener("submit", (event) => {
 
 function renderCountdowns() {
   const list = $("#countdown-list");
+  if (!list) return;
+
   list.replaceChildren();
 
   if (state.countdowns.length === 0) {
@@ -1006,7 +1012,6 @@ function renderCountdowns() {
     row.className = "countdown-item";
 
     const info = document.createElement("div");
-
     const title = document.createElement("strong");
     title.textContent = countdown.title;
 
@@ -1027,24 +1032,27 @@ function renderCountdowns() {
 
     info.append(title, date, number);
 
-    row.append(info, createDeleteButton(() => {
-      state.countdowns = state.countdowns.filter(
-        (item) => item.id !== countdown.id
-      );
+    row.append(
+      info,
+      createDeleteButton(() => {
+        state.countdowns = state.countdowns.filter(
+          (item) => item.id !== countdown.id
+        );
 
-      saveData();
-      renderCountdowns();
-    }));
+        saveData();
+        renderCountdowns();
+      })
+    );
 
     list.append(row);
   });
 }
 
-$("#countdown-form").addEventListener("submit", (event) => {
+$("#countdown-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const title = $("#countdown-title").value.trim();
-  const date = $("#countdown-date").value;
+  const title = $("#countdown-title")?.value.trim();
+  const date = $("#countdown-date")?.value;
 
   if (!title || !date) return;
 
@@ -1053,18 +1061,13 @@ $("#countdown-form").addEventListener("submit", (event) => {
     return;
   }
 
-  state.countdowns.push({
-    id: makeId(),
-    title,
-    date
-  });
+  state.countdowns.push({ id: makeId(), title, date });
 
   $("#countdown-title").value = "";
   $("#countdown-date").value = "";
 
   saveData();
   renderCountdowns();
-
   showToast("Countdown added! Something to look forward to ♡");
 });
 
@@ -1081,23 +1084,31 @@ function money(amount) {
 
 function getBudgetTotal() {
   return state.budgetEntries.reduce((total, entry) => {
-    return total + (entry.type === "income" ? entry.amount : -entry.amount);
+    return total + (
+      entry.type === "income" ? entry.amount : -entry.amount
+    );
   }, 0);
 }
 
 function renderBudget() {
+  const totalDisplay = $("#budget-total");
+  const goalDisplay = $("#budget-goal-display");
+  const progressFill = $("#budget-progress-fill");
+  const list = $("#budget-entry-list");
+
+  if (!list) return;
+
   const total = getBudgetTotal();
 
-  $("#budget-total").textContent = money(total);
-  $("#budget-goal-display").textContent = money(state.budgetGoal);
+  if (totalDisplay) totalDisplay.textContent = money(total);
+  if (goalDisplay) goalDisplay.textContent = money(state.budgetGoal);
 
   const progress = state.budgetGoal > 0
     ? Math.max(0, Math.min(100, (total / state.budgetGoal) * 100))
     : 0;
 
-  $("#budget-progress-fill").style.width = `${progress}%`;
+  if (progressFill) progressFill.style.width = `${progress}%`;
 
-  const list = $("#budget-entry-list");
   list.replaceChildren();
 
   if (state.budgetEntries.length === 0) {
@@ -1110,7 +1121,6 @@ function renderBudget() {
     row.className = "budget-entry";
 
     const info = document.createElement("div");
-
     const title = document.createElement("strong");
     title.textContent = entry.name;
 
@@ -1127,23 +1137,30 @@ function renderBudget() {
 
     info.append(title, description);
 
-    row.append(info, amount, createDeleteButton(() => {
-      state.budgetEntries = state.budgetEntries.filter(
-        (item) => item.id !== entry.id
-      );
+    row.append(
+      info,
+      amount,
+      createDeleteButton(() => {
+        state.budgetEntries = state.budgetEntries.filter(
+          (item) => item.id !== entry.id
+        );
 
-      saveData();
-      renderBudget();
-    }));
+        saveData();
+        renderBudget();
+      })
+    );
 
     list.append(row);
   });
 }
 
-$("#budget-goal-form").addEventListener("submit", (event) => {
+$("#budget-goal-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const goal = Number($("#budget-goal-input").value);
+  const input = $("#budget-goal-input");
+  if (!input) return;
+
+  const goal = Number(input.value);
 
   if (!Number.isFinite(goal) || goal <= 0) {
     showToast("Choose a savings goal above zero ♡");
@@ -1151,40 +1168,32 @@ $("#budget-goal-form").addEventListener("submit", (event) => {
   }
 
   state.budgetGoal = goal;
-
-  $("#budget-goal-input").value = "";
+  input.value = "";
 
   saveData();
   renderBudget();
-
   showToast("Savings goal updated ♡");
 });
 
-$("#budget-entry-form").addEventListener("submit", (event) => {
+$("#budget-entry-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const name = $("#budget-entry-name").value.trim();
-  const amount = Number($("#budget-entry-amount").value);
-  const type = $("#budget-entry-type").value;
+  const name = $("#budget-entry-name")?.value.trim();
+  const amount = Number($("#budget-entry-amount")?.value);
+  const type = $("#budget-entry-type")?.value;
 
   if (!name || !Number.isFinite(amount) || amount <= 0) {
     showToast("Enter a description and a valid amount ♡");
     return;
   }
 
-  state.budgetEntries.push({
-    id: makeId(),
-    name,
-    amount,
-    type
-  });
+  state.budgetEntries.push({ id: makeId(), name, amount, type });
 
   $("#budget-entry-name").value = "";
   $("#budget-entry-amount").value = "";
 
   saveData();
   renderBudget();
-
   showToast("Budget entry added ♡");
 });
 
@@ -1194,6 +1203,8 @@ $("#budget-entry-form").addEventListener("submit", (event) => {
 
 function renderVisions() {
   const list = $("#vision-list");
+  if (!list) return;
+
   list.replaceChildren();
 
   if (state.visions.length === 0) {
@@ -1206,7 +1217,6 @@ function renderVisions() {
     row.className = "vision-item";
 
     const info = document.createElement("div");
-
     const title = document.createElement("strong");
     title.textContent = `✨ ${vision.title}`;
 
@@ -1215,36 +1225,37 @@ function renderVisions() {
 
     info.append(title, note);
 
-    row.append(info, createDeleteButton(() => {
-      state.visions = state.visions.filter((item) => item.id !== vision.id);
-      saveData();
-      renderVisions();
-    }));
+    row.append(
+      info,
+      createDeleteButton(() => {
+        state.visions = state.visions.filter(
+          (item) => item.id !== vision.id
+        );
+
+        saveData();
+        renderVisions();
+      })
+    );
 
     list.append(row);
   });
 }
 
-$("#vision-form").addEventListener("submit", (event) => {
+$("#vision-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const title = $("#vision-title").value.trim();
-  const note = $("#vision-note").value.trim();
+  const title = $("#vision-title")?.value.trim();
+  const note = $("#vision-note")?.value.trim();
 
   if (!title) return;
 
-  state.visions.push({
-    id: makeId(),
-    title,
-    note
-  });
+  state.visions.push({ id: makeId(), title, note });
 
   $("#vision-title").value = "";
   $("#vision-note").value = "";
 
   saveData();
   renderVisions();
-
   showToast("A little dream added to your board ✨");
 });
 
@@ -1254,10 +1265,8 @@ $("#vision-form").addEventListener("submit", (event) => {
 
 function makeEmptyMessage(message) {
   const element = document.createElement("p");
-
   element.className = "empty-message";
   element.textContent = message;
-
   return element;
 }
 
@@ -1279,20 +1288,19 @@ function initializeCandlee() {
   renderVisions();
   renderTimer();
 
-  $("#study-date-label").textContent =
-    new Date().toLocaleDateString(undefined, {
+  const studyDateLabel = $("#study-date-label");
+
+  if (studyDateLabel) {
+    studyDateLabel.textContent = new Date().toLocaleDateString(undefined, {
       weekday: "short",
       month: "short",
       day: "numeric"
     });
+  }
 
-  // Refresh countdowns when the user returns to the page.
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-      renderCountdowns();
-    }
+    if (!document.hidden) renderCountdowns();
   });
 }
 
 initializeCandlee();
-```
