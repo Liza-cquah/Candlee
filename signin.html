@@ -1,31 +1,23 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="description"
-    content="Candlee — your little corner of the world."
-  >
-
-  <title>Welcome to Candlee 🤎</title>
+  <title>Sign In | Candlee</title>
 
   <style>
     :root {
-      --cream: #FAF6EF;
-      --ivory: #FFFCF7;
-      --brown: #493A32;
-      --cocoa: #806454;
-      --beige: #E8DED0;
-      --blush: #DDB8B0;
-      --muted: #88796E;
-      --success: #476B50;
-      --error: #954B43;
+      --cream: #fffaf5;
+      --pink: #f4dce3;
+      --dark-pink: #d88fa5;
+      --brown: #624b42;
+      --light-brown: #92776b;
+      --white: #ffffff;
+      --border: #eadbd3;
+      --green: #49765a;
+      --red: #a94343;
     }
 
     * {
@@ -36,426 +28,291 @@
       margin: 0;
       min-height: 100vh;
       padding: 24px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
-      background:
-        radial-gradient(
-          circle at 10% 15%,
-          #F0E4D7 0,
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 90% 85%,
-          #F0DFDA 0,
-          transparent 28%
-        ),
-        var(--cream);
-
+      font-family: Georgia, "Times New Roman", serif;
       color: var(--brown);
-
-      font-family:
-        "Trebuchet MS",
-        "Segoe UI",
-        sans-serif;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    button:focus-visible,
-    a:focus-visible {
-      outline: 3px solid var(--blush);
-      outline-offset: 4px;
+      background:
+        radial-gradient(circle at top left, #f8e7eb, transparent 40%),
+        radial-gradient(circle at bottom right, #f4e5d5, transparent 40%),
+        var(--cream);
     }
 
     .page {
       width: 100%;
       max-width: 440px;
+    }
+
+    .brand {
       text-align: center;
+      margin-bottom: 22px;
     }
 
-    .decoration {
-      margin-bottom: 14px;
-      color: var(--cocoa);
-      font-size: 25px;
-      letter-spacing: 12px;
+    .brand-icon {
+      font-size: 42px;
+      margin-bottom: 4px;
     }
 
-    .logo {
+    .brand h1 {
       margin: 0;
-      font-family: Georgia, serif;
-      font-size: clamp(48px, 10vw, 66px);
-      font-weight: normal;
-      letter-spacing: -3px;
-    }
-
-    .logo span {
-      color: var(--cocoa);
-    }
-
-    .tagline {
-      margin: 12px 0 30px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .card {
-      padding: 34px 28px;
-
-      background: rgba(255, 252, 247, 0.96);
-      border: 1px solid #EEE4D8;
-      border-radius: 28px;
-
-      box-shadow:
-        0 18px 50px rgba(73, 58, 50, 0.08);
-    }
-
-    .welcome {
-      margin: 0 0 10px;
-
-      font-family: Georgia, serif;
-      font-size: 29px;
-      font-weight: normal;
-    }
-
-    .subtitle {
-      margin: 0 0 27px;
-
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    .auth-button {
-      width: 100%;
-      min-height: 54px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-
-      margin: 12px 0;
-      padding: 13px 16px;
-
-      color: var(--brown);
-      background: #FFFFFF;
-
-      border: 1px solid #E5DCD1;
-      border-radius: 15px;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .auth-button:hover:not(:disabled) {
-      transform: translateY(-2px);
-      background: #FFF9F2;
-
-      box-shadow:
-        0 6px 16px rgba(73, 58, 50, 0.07);
-    }
-
-    .auth-button:disabled {
-      cursor: wait;
-      opacity: 0.65;
-    }
-
-    .provider-icon {
-      width: 23px;
-      height: 23px;
-      flex-shrink: 0;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      margin: 24px 0;
-
-      color: #A29488;
-      font-size: 11px;
+      font-size: 42px;
       letter-spacing: 1px;
     }
 
-    .divider::before,
-    .divider::after {
-      content: "";
-      height: 1px;
-      flex: 1;
-      background: var(--beige);
+    .brand p {
+      margin: 8px 0 0;
+      color: var(--light-brown);
+      font-size: 15px;
     }
 
-    .email-note {
-      margin: 0;
-
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
+    .card {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 32px;
+      box-shadow: 0 15px 45px rgba(98, 75, 66, 0.09);
     }
 
-    .status {
+    .card h2 {
+      text-align: center;
+      margin: 0 0 10px;
+      font-size: 27px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--light-brown);
+      line-height: 1.6;
+      margin: 0 0 25px;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin: 17px 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--cream);
+      color: var(--brown);
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--dark-pink);
+      box-shadow: 0 0 0 3px rgba(216, 143, 165, 0.15);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
+    }
+
+    .primary {
+      margin-top: 24px;
+      background: var(--dark-pink);
+      color: white;
+    }
+
+    .secondary {
+      margin-top: 12px;
+      background: var(--pink);
+      color: var(--brown);
+    }
+
+    .text-button {
+      display: block;
+      width: auto;
+      margin: 13px auto 0;
+      padding: 7px;
+      background: transparent;
+      color: var(--light-brown);
+      font-size: 13px;
+      font-weight: normal;
+    }
+
+    .message {
       display: none;
-
       margin-top: 18px;
       padding: 13px;
-
-      background: #F2E9DE;
       border-radius: 12px;
-
-      color: var(--brown);
+      font-family: Arial, sans-serif;
       font-size: 13px;
-      line-height: 1.7;
-
+      line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
-    .status.visible {
+    .message.success {
       display: block;
+      background: #edf6ee;
+      color: var(--green);
+      border: 1px solid #d2e6d5;
     }
 
-    .status.error {
-      color: var(--error);
-      background: #F9E9E5;
-    }
-
-    .status.success {
-      color: var(--success);
-      background: #EAF2E8;
-    }
-
-    .account-panel {
-      display: none;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--beige);
-    }
-
-    .account-panel.visible {
+    .message.error {
       display: block;
+      background: #fff0ef;
+      color: var(--red);
+      border: 1px solid #f0d2cf;
     }
 
-    .account-email {
-      margin: 0 0 15px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-      overflow-wrap: anywhere;
+    .switch-text {
+      text-align: center;
+      margin: 22px 0 0;
+      color: var(--light-brown);
+      font-size: 14px;
     }
 
-    .signout-button {
-      padding: 10px 18px;
-
-      color: var(--cocoa);
+    .switch-text button {
+      display: inline;
+      width: auto;
+      padding: 0;
       background: transparent;
-
-      border: 1px solid var(--beige);
-      border-radius: 12px;
-
-      cursor: pointer;
-    }
-
-    .signout-button:hover {
-      background: #F7EFE5;
+      color: #bd7089;
+      font-size: 14px;
     }
 
     .footer {
-      margin-top: 25px;
-
-      color: var(--muted);
+      text-align: center;
+      margin-top: 22px;
+      color: var(--light-brown);
       font-size: 12px;
-      line-height: 1.9;
     }
 
-    .footer a {
-      color: var(--cocoa);
-      text-underline-offset: 3px;
+    .hidden {
+      display: none !important;
     }
 
-    .tiny-heart {
-      color: #C58F87;
-    }
-
-    @media (max-width: 420px) {
+    @media (max-width: 480px) {
       body {
         padding: 16px;
       }
 
       .card {
-        padding: 29px 20px;
+        padding: 25px 20px;
       }
 
-      .welcome {
-        font-size: 26px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        transition: none !important;
+      .brand h1 {
+        font-size: 36px;
       }
     }
   </style>
 </head>
 
 <body>
-
   <main class="page">
 
-    <div class="decoration" aria-hidden="true">
-      ✧ ♡ ✧
-    </div>
+    <header class="brand">
+      <div class="brand-icon">🕯️</div>
+      <h1>Candlee</h1>
+      <p>A little space for the life you're creating.</p>
+    </header>
 
-    <h1 class="logo">
-      Candle<span>e</span>
-    </h1>
+    <section class="card">
 
-    <p class="tagline">
-      Your little corner of the world.
-    </p>
+      <h2 id="formTitle">Welcome back ♡</h2>
 
-    <section
-      class="card"
-      aria-labelledby="welcome-heading"
-    >
-
-      <h2 class="welcome" id="welcome-heading">
-        Make yourself at home.
-      </h2>
-
-      <p class="subtitle">
-        A little space for your dreams, your goals,
-        and everything that makes you YOU.
+      <p class="subtitle" id="formSubtitle">
+        Your dreams, your goals, your little moments.
+        Let's pick up where you left off.
       </p>
 
-      <div id="auth-buttons">
+      <form id="authForm">
 
-        <button
-          class="auth-button"
-          type="button"
-          data-provider="google"
-        >
-          <svg
-            class="provider-icon"
-            viewBox="0 0 48 48"
-            aria-hidden="true"
+        <div id="nameGroup" class="hidden">
+          <label for="displayName">What should we call you?</label>
+          <input
+            type="text"
+            id="displayName"
+            placeholder="Your name"
+            autocomplete="name"
           >
-            <path
-              fill="#4285F4"
-              d="M43.6 24.5c0-1.5-.1-3-.4-4.5H24v8.5h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.7c3.9-3.6 6-8.9 6-15.4z"
-            />
-            <path
-              fill="#34A853"
-              d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.2c-1.8 1.2-4.1 2-6.8 2-5.2 0-9.6-3.5-11.2-8.3H5.9v5.4A20 20 0 0 0 24 44z"
-            />
-            <path
-              fill="#FBBC05"
-              d="M12.8 27.6a12 12 0 0 1 0-7.2V15H5.9a20 20 0 0 0 0 18z"
-            />
-            <path
-              fill="#EA4335"
-              d="M24 12.1c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 6.1 29.5 4 24 4A20 20 0 0 0 5.9 15l6.9 5.4c1.6-4.8 6-8.3 11.2-8.3z"
-            />
-          </svg>
+        </div>
 
-          Continue with Google
+        <label for="email">Email address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        >
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="At least 8 characters"
+          minlength="8"
+          autocomplete="current-password"
+          required
+        >
+
+        <div id="confirmGroup" class="hidden">
+          <label for="confirmPassword">Confirm password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Type your password again"
+            minlength="8"
+            autocomplete="new-password"
+          >
+        </div>
+
+        <button type="submit" class="primary" id="submitButton">
+          Sign in ♡
         </button>
 
-        <button
-          class="auth-button"
-          type="button"
-          data-provider="apple"
-        >
-          <svg
-            class="provider-icon"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M16.37 12.18c.02 2.17 1.9 2.89 1.92 2.9-.02.05-.3 1.03-.99 2.03-.6.86-1.22 1.72-2.2 1.74-.96.02-1.27-.56-2.37-.56-1.1 0-1.45.54-2.36.58-.95.04-1.67-.94-2.27-1.8-1.23-1.78-2.17-5.03-.91-7.22.62-1.09 1.73-1.78 2.93-1.8.91-.02 1.77.62 2.37.62.59 0 1.7-.77 2.87-.66.49.02 1.87.2 2.76 1.51-.07.04-1.65.96-1.63 2.66zM14.5 5.94c.5-.6.83-1.43.74-2.26-.72.03-1.59.48-2.1 1.08-.46.53-.86 1.37-.75 2.18.8.06 1.61-.41 2.11-1z"
-            />
-          </svg>
+      </form>
 
-          Continue with Apple
-        </button>
-
-        <button
-          class="auth-button"
-          type="button"
-          data-provider="azure"
-        >
-          <svg
-            class="provider-icon"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path fill="#F25022" d="M2 2h9v9H2z"/>
-            <path fill="#7FBA00" d="M13 2h9v9h-9z"/>
-            <path fill="#00A4EF" d="M2 13h9v9H2z"/>
-            <path fill="#FFB900" d="M13 13h9v9h-9z"/>
-          </svg>
-
-          Continue with Microsoft
-        </button>
-
-      </div>
-
-      <div class="divider">
-        YOUR SPACE, YOUR RULES
-      </div>
-
-      <p class="email-note">
-        A cozy little home for your ideas, routines,
-        and the person you're becoming.
-      </p>
+      <button type="button" class="text-button" id="forgotButton">
+        Forgot your password?
+      </button>
 
       <div
-        class="status"
-        id="status"
+        id="message"
+        class="message"
         role="status"
         aria-live="polite"
       ></div>
 
-      <div
-        class="account-panel"
-        id="account-panel"
-      >
-        <p class="account-email" id="account-email"></p>
-
-        <button
-          class="signout-button"
-          id="signout-button"
-          type="button"
-        >
-          Sign out
-        </button>
-      </div>
+      <p class="switch-text" id="switchText">
+        New to Candlee?
+        <button type="button" id="switchButton">Create an account</button>
+      </p>
 
     </section>
 
-    <p class="footer">
-      Made with <span class="tiny-heart">♡</span>
-      and a little bit of magic.
-      <br>
-      Please review our privacy practices before using
-      Candlee for personal information.
-    </p>
+    <footer class="footer">
+      Made with love, just for your next chapter ♡
+    </footer>
 
   </main>
 
@@ -463,257 +320,95 @@
     import { createClient } from
       "https://esm.sh/@supabase/supabase-js@2";
 
-    // ==================================
-    // CANDLEE CONFIGURATION
-    // ==================================
-
     const SUPABASE_URL =
-      "https://snodsrcvlezthsenvrli.supabase.co/rest/v1/";
+      "https://snodsrcvlezthsenvrli.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_Qv2gVkdWnjxP52zub-OLnA_7Teh9AYR";
 
-    const authButtons =
-      document.getElementById("auth-buttons");
-
-    const statusBox =
-      document.getElementById("status");
-
-    const accountPanel =
-      document.getElementById("account-panel");
-
-    const accountEmail =
-      document.getElementById("account-email");
-
-    const signoutButton =
-      document.getElementById("signout-button");
-
-    let supabase = null;
-
-    // ==================================
-    // STATUS MESSAGES
-    // ==================================
-
-    function showStatus(message, type = "") {
-      statusBox.textContent = message;
-      statusBox.className = "status visible";
-
-      if (type) {
-        statusBox.classList.add(type);
-      }
-    }
-
-    function hideStatus() {
-      statusBox.textContent = "";
-      statusBox.className = "status";
-    }
-
-    function setButtonsDisabled(disabled) {
-      document
-        .querySelectorAll("[data-provider]")
-        .forEach((button) => {
-          button.disabled = disabled;
-        });
-    }
-
-    // ==================================
-    // AUTHENTICATION
-    // ==================================
-
-    async function signIn(provider) {
-      if (!supabase) {
-        showStatus(
-          "Candlee isn't connected yet. " +
-          "Please check the Supabase project URL " +
-          "and publishable key.",
-          "error"
-        );
-
-        return;
-      }
-
-      hideStatus();
-      setButtonsDisabled(true);
-
-      showStatus(
-        "Opening your sign-in page... 🤎"
-      );
-
-      try {
-        const { error } =
-          await supabase.auth.signInWithOAuth({
-            provider: provider,
-
-            options: {
-              redirectTo: window.location.href
-            }
-          });
-
-        if (error) {
-          throw error;
-        }
-
-      } catch (error) {
-        console.error(
-          "Candlee sign-in error:",
-          error
-        );
-
-        showStatus(
-          "We couldn't start sign-in. " +
-          "Please check your provider configuration " +
-          "in Supabase and try again.",
-          "error"
-        );
-
-        setButtonsDisabled(false);
-      }
-    }
-
-    // ==================================
-    // DISPLAY THE SIGNED-IN USER
-    // ==================================
-
-    function displayUser(user) {
-      if (user) {
-        authButtons.style.display = "none";
-        accountPanel.classList.add("visible");
-
-        accountEmail.textContent =
-          "You're signed in as " +
-          (user.email || "a Candlee user") +
-          ". Welcome home! 🤎";
-
-        showStatus(
-          "You're signed in to Candlee! ♡",
-          "success"
-        );
-
-      } else {
-        authButtons.style.display = "block";
-        accountPanel.classList.remove("visible");
-        accountEmail.textContent = "";
-      }
-    }
-
-    // ==================================
-    // START CANDLEE
-    // ==================================
-
-    const configurationMissing =
-      SUPABASE_URL === "https://snodsrcvlezthsenvrli.supabase.co/rest/v1/
-" ||
-      SUPABASE_PUBLISHABLE_KEY ===
-        "sb_publishable_Qv2gVkdWnjxP52zub-OLnA_7Teh9AYR
-";
-
-    if (configurationMissing) {
-      showStatus(
-        "Candlee's sign-in connection is almost ready! " +
-        "We still need to add your Supabase project details."
-      );
-
-    } else {
-      try {
-        supabase = createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-
-        supabase.auth.onAuthStateChange(
-          (_event, session) => {
-            displayUser(session?.user ?? null);
-          }
-        );
-
-        const { data, error } =
-          await supabase.auth.getSession();
-
-        if (error) {
-          throw error;
-        }
-
-        displayUser(data.session?.user ?? null);
-
-      } catch (error) {
-        console.error(
-          "Candlee setup error:",
-          error
-        );
-
-        showStatus(
-          "We couldn't connect to Supabase. " +
-          "Please check your project details.",
-          "error"
-        );
-      }
-    }
-
-    // ==================================
-    // CONNECT SIGN-IN BUTTONS
-    // ==================================
-
-    document
-      .querySelector('[data-provider="google"]')
-      .addEventListener("click", () => {
-        signIn("google");
-      });
-
-    document
-      .querySelector('[data-provider="apple"]')
-      .addEventListener("click", () => {
-        signIn("apple");
-      });
-
-    document
-      .querySelector('[data-provider="azure"]')
-      .addEventListener("click", () => {
-        signIn("azure");
-      });
-
-    // ==================================
-    // SIGN OUT
-    // ==================================
-
-    signoutButton.addEventListener(
-      "click",
-      async () => {
-        if (!supabase) {
-          return;
-        }
-
-        signoutButton.disabled = true;
-
-        try {
-          const { error } =
-            await supabase.auth.signOut();
-
-          if (error) {
-            throw error;
-          }
-
-          showStatus(
-            "You've signed out. See you soon! ♡",
-            "success"
-          );
-
-        } catch (error) {
-          console.error(
-            "Candlee sign-out error:",
-            error
-          );
-
-          showStatus(
-            "We couldn't sign you out. Please try again.",
-            "error"
-          );
-
-        } finally {
-          signoutButton.disabled = false;
-        }
-      }
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
     );
-  </script>
 
-</body>
-</html>
+    const $ = (id) => document.getElementById(id);
+
+    let mode = "signin";
+    let busy = false;
+
+    const form = $("authForm");
+    const messageBox = $("message");
+    const submitButton = $("submitButton");
+
+    function showMessage(text, type = "success") {
+      messageBox.textContent = text;
+      messageBox.className = "message " + type;
+    }
+
+    function clearMessage() {
+      messageBox.textContent = "";
+      messageBox.className = "message";
+    }
+
+    function setBusy(value) {
+      busy = value;
+      submitButton.disabled = value;
+      $("switchButton").disabled = value;
+      $("forgotButton").disabled = value;
+
+      if (value) {
+        submitButton.textContent = "Please wait…";
+      } else {
+        updateForm();
+      }
+    }
+
+    function updateForm() {
+      $("nameGroup").classList.toggle(
+        "hidden",
+        mode !== "signup"
+      );
+
+      $("confirmGroup").classList.toggle(
+        "hidden",
+        mode !== "signup"
+      );
+
+      $("forgotButton").classList.toggle(
+        "hidden",
+        mode !== "signin"
+      );
+
+      $("formTitle").textContent =
+        mode === "signup" ? "Your new beginning ♡" :
+        mode === "reset" ? "Choose a new password ♡" :
+        "Welcome back ♡";
+
+      $("formSubtitle").textContent =
+        mode === "signup"
+          ? "Create your little corner of the world."
+          : mode === "reset"
+          ? "Choose a new password for your Candlee account."
+          : "Your dreams, your goals, your little moments. Let's pick up where you left off.";
+
+      submitButton.textContent =
+        mode === "signup" ? "Create my account ♡" :
+        mode === "reset" ? "Save new password ♡" :
+        "Sign in ♡";
+
+      $("switchText").classList.toggle(
+        "hidden",
+        mode === "reset"
+      );
+
+      $("switchText").innerHTML =
+        mode === "signup"
+          ? 'Already have an account? <button type="button" id="switchButton">Sign in</button>'
+          : 'New to Candlee? <button type="button" id="switchButton">Create an account</button>';
+
+      $("switchButton").disabled = busy;
+
+      $("password").autocomplete =
+        mode === "signin" ? "current-password" : "new-password";
+
+      $("password").placeholder
