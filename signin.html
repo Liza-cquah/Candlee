@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Welcome to Candlee 🤎</title>
+
+  <meta
+    name="description"
+    content="Your little corner of the world. Welcome to Candlee."
+  >
+
+  <style>
+    :root {
+      --cream: #FAF6EF;
+      --ivory: #FFFCF7;
+      --brown: #493A32;
+      --cocoa: #806454;
+      --beige: #E8DED0;
+      --blush: #DDB8B0;
+      --muted: #88796E;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at 10% 15%,
+          #F0E4D7 0,
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 85%,
+          #F0DFDA 0,
+          transparent 28%
+        ),
+        var(--cream);
+
+      color: var(--brown);
+      font-family:
+        "Trebuchet MS",
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      position: relative;
+    }
+
+    .decoration {
+      font-size: 25px;
+      letter-spacing: 15px;
+      margin-bottom: 15px;
+      color: var(--cocoa);
+    }
+
+    .logo {
+      font-family: Georgia, serif;
+      font-size: clamp(46px, 10vw, 66px);
+      font-weight: normal;
+      letter-spacing: -3px;
+      margin: 0;
+    }
+
+    .logo span {
+      color: var(--cocoa);
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 12px 0 30px;
+      line-height: 1.7;
+    }
+
+    .card {
+      background: rgba(255, 252, 247, 0.94);
+      border: 1px solid #EEE4D8;
+      border-radius: 28px;
+      padding: 34px 28px;
+      box-shadow: 0 18px 50px rgba(73, 58, 50, 0.08);
+    }
+
+    .welcome {
+      font-family: Georgia, serif;
+      font-size: 29px;
+      font-weight: normal;
+      margin: 0 0 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 27px;
+    }
+
+    .auth-button {
+      width: 100%;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
+      padding: 13px 16px;
+      margin: 12px 0;
+
+      background: #FFFFFF;
+      border: 1px solid #E5DCD1;
+      border-radius: 15px;
+
+      color: var(--brown);
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .auth-button:hover {
+      transform: translateY(-2px);
+      background: #FFF9F2;
+      box-shadow: 0 6px 16px rgba(73, 58, 50, 0.07);
+    }
+
+    .auth-button:focus-visible {
+      outline: 3px solid var(--blush);
+      outline-offset: 3px;
+    }
+
+    .provider-icon {
+      width: 23px;
+      height: 23px;
+      flex-shrink: 0;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: #A29488;
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--beige);
+    }
+
+    .email-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .status {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #F2E9DE;
+      color: var(--brown);
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .status.visible {
+      display: block;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+      margin-top: 25px;
+    }
+
+    .footer a {
+      color: var(--cocoa);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .tiny-heart {
+      color: #C58F87;
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        padding: 29px 20px;
+      }
+
+      .welcome {
+        font-size: 26px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="decoration" aria-hidden="true">
+      ✧ ♡ ✧
+    </div>
+
+    <h1 class="logo">
+      Candle<span>e</span>
+    </h1>
+
+    <p class="tagline">
+      Your little corner of the world.
+    </p>
+
+    <section class="card" aria-labelledby="welcome-heading">
+
+      <h2 class="welcome" id="welcome-heading">
+        Make yourself at home.
+      </h2>
+
+      <p class="subtitle">
+        A little space for your dreams, your goals,
+        and everything that makes you YOU.
+      </p>
+
+      <button
+        class="auth-button"
+        type="button"
+        data-provider="google"
+      >
+        <svg
+          class="provider-icon"
+          viewBox="0 0 48 48"
+          aria-hidden="true"
+        >
+          <path fill="#EA4335"
+            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+            transform="translate(0 5)"/>
+          <path fill="#4285F4"
+            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 38.01 46.98 31.82 46.98 24.55z"/>
+          <path fill="#FBBC05"
+            d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.8 23.8 0 0 0 0 24c0 3.85.92 7.5 2.53 10.78l8-6.19z"
+            transform="translate(0 5)"/>
+          <path fill="#34A853"
+            d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.14 1.45-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+            transform="translate(0 -5)"/>
+        </svg>
+
+        Continue with Google
+      </button>
+
+      <button
+        class="auth-button"
+        type="button"
+        data-provider="apple"
+      >
+        <svg
+          class="provider-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            fill="currentColor"
+            d="M16.37 12.18c.02 2.17 1.9 2.89 1.92 2.9-.02.05-.3 1.03-.99 2.03-.6.86-1.22 1.72-2.2 1.74-.96.02-1.27-.56-2.37-.56-1.1 0-1.45.54-2.36.58-.95.04-1.67-.94-2.27-1.8-1.23-1.78-2.17-5.03-.91-7.22.62-1.09 1.73-1.78 2.93-1.8.91-.02 1.77.62 2.37.62.59 0 1.7-.77 2.87-.66.49.02 1.87.2 2.76 1.51-.07.04-1.65.96-1.63 2.66zM14.5 5.94c.5-.6.83-1.43.74-2.26-.72.03-1.59.48-2.1 1.08-.46.53-.86 1.37-.75 2.18.8.06 1.61-.41 2.11-1z"
+          />
+        </svg>
+
+        Continue with Apple
+      </button>
+
+      <button
+        class="auth-button"
+        type="button"
+        data-provider="azure"
+      >
+        <svg
+          class="provider-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path fill="#F25022" d="M2 2h9v9H2z"/>
+          <path fill="#7FBA00" d="M13 2h9v9h-9z"/>
+          <path fill="#00A4EF" d="M2 13h9v9H2z"/>
+          <path fill="#FFB900" d="M13 13h9v9h-9z"/>
+        </svg>
+
+        Continue with Microsoft
+      </button>
+
+      <div class="divider">
+        YOUR SPACE, YOUR RULES
+      </div>
+
+      <p class="email-note">
+        A cozy little home for your ideas, routines,
+        and the person you're becoming.
+      </p>
+
+      <div
+        class="status"
+        id="status"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+    </section>
+
+    <p class="footer">
+      Made with <span class="tiny-heart">♡</span> and a little bit of magic.
+      <br>
+      By continuing, you'll be able to review Candlee's
+      <a href="privacy.html">Privacy Policy</a>
+      and
+      <a href="terms.html">Terms of Service</a>
+      when those pages are available.
+    </p>
+
+  </main>
+
+  <script>
+    /*
+      CANDLEE AUTHENTICATION
+
+      This page is prepared for Supabase authentication.
+
+      The buttons will not sign users in until we configure
+      Supabase and the Google, Apple, and Microsoft providers.
+
+      We will add the project's public URL and publishable
+      key in our next setup step.
+
+      NEVER put a Supabase service_role key in this page.
+    */
+
+    const statusBox = document.getElementById("status");
+
+    document.querySelectorAll("[data-provider]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const provider = button.dataset.provider;
+
+        statusBox.textContent =
+          "We're getting Candlee ready! " +
+          "The " +
+          (provider === "azure" ? "Microsoft" :
+           provider.charAt(0).toUpperCase() + provider.slice(1)) +
+          " sign-in connection still needs to be configured. " +
+          "We'll connect it next.";
+
+        statusBox.classList.add("visible");
+      });
+    });
+  </script>
+
+</body>
+</html>
