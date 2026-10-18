@@ -30,16 +30,39 @@ const state = {
   theme: savedData.theme || "pink",
   soundsEnabled: savedData.soundsEnabled !== false,
   playlist: savedData.playlist || "",
-  studyTasks: Array.isArray(savedData.studyTasks) ? savedData.studyTasks : [],
+
+  studyTasks: Array.isArray(savedData.studyTasks)
+    ? savedData.studyTasks
+    : [],
+
   goals: Array.isArray(savedData.goals) ? savedData.goals : [],
   habits: Array.isArray(savedData.habits) ? savedData.habits : [],
+
   completedHabits: savedData.completedHabits || {},
-  letters: Array.isArray(savedData.letters) ? savedData.letters : [],
-  countdowns: Array.isArray(savedData.countdowns) ? savedData.countdowns : [],
+
+  letters: Array.isArray(savedData.letters)
+    ? savedData.letters
+    : [],
+
+  countdowns: Array.isArray(savedData.countdowns)
+    ? savedData.countdowns
+    : [],
+
   budgetGoal: Number(savedData.budgetGoal) || 100,
-  budgetEntries: Array.isArray(savedData.budgetEntries) ? savedData.budgetEntries : [],
-  visions: Array.isArray(savedData.visions) ? savedData.visions : [],
-  affirmationIndex: Number(savedData.affirmationIndex) || 0
+
+  budgetEntries: Array.isArray(savedData.budgetEntries)
+    ? savedData.budgetEntries
+    : [],
+
+  visions: Array.isArray(savedData.visions)
+    ? savedData.visions
+    : [],
+
+  affirmationIndex: Number(savedData.affirmationIndex) || 0,
+
+  notebookPages: Array.isArray(savedData.notebookPages)
+    ? savedData.notebookPages
+    : []
 };
 
 function saveData() {
@@ -74,58 +97,129 @@ function showToast(message) {
 }
 
 /* -----------------------------------------
-   OPTIONAL BUTTON SOUNDS
+   BUTTON SOUNDS ♡
+   Original chime + keyboard-like click
    ----------------------------------------- */
 
 let audioContext;
+
+function getAudioContext() {
+  const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) return null;
+
+  if (!audioContext) {
+    audioContext = new AudioContextClass();
+  }
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  return audioContext;
+}
+
+/* Your original soft chime */
+
+function playOriginalClickSound(context) {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+
+  oscillator.type = "sine";
+
+  oscillator.frequency.setValueAtTime(
+    900,
+    context.currentTime
+  );
+
+  oscillator.frequency.exponentialRampToValueAtTime(
+    500,
+    context.currentTime + 0.035
+  );
+
+  gain.gain.setValueAtTime(
+    0.0001,
+    context.currentTime
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.035,
+    context.currentTime + 0.005
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    context.currentTime + 0.05
+  );
+
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+
+  oscillator.start();
+  oscillator.stop(context.currentTime + 0.055);
+}
+
+/* A tiny keyboard-like click */
+
+function playKeyboardClickSound(context) {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+
+  oscillator.type = "triangle";
+
+  oscillator.frequency.setValueAtTime(
+    1250,
+    context.currentTime
+  );
+
+  oscillator.frequency.exponentialRampToValueAtTime(
+    280,
+    context.currentTime + 0.018
+  );
+
+  gain.gain.setValueAtTime(
+    0.0001,
+    context.currentTime
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.012,
+    context.currentTime + 0.002
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    context.currentTime + 0.025
+  );
+
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+
+  oscillator.start();
+  oscillator.stop(context.currentTime + 0.03);
+}
+
+/* Play both sounds together */
 
 function playClickSound() {
   if (!state.soundsEnabled) return;
 
   try {
-    const AudioContextClass =
-      window.AudioContext || window.webkitAudioContext;
+    const context = getAudioContext();
+    if (!context) return;
 
-    if (!AudioContextClass) return;
-
-    if (!audioContext) audioContext = new AudioContextClass();
-
-    if (audioContext.state === "suspended") {
-      audioContext.resume();
-    }
-
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(900, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(
-      500,
-      audioContext.currentTime + 0.035
-    );
-
-    gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-      0.035,
-      audioContext.currentTime + 0.005
-    );
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001,
-      audioContext.currentTime + 0.05
-    );
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.055);
+    playOriginalClickSound(context);
+    playKeyboardClickSound(context);
   } catch (error) {
-    // Audio is optional. Candlee should still work without it.
+    // Sound is optional. Candlee still works without it.
   }
 }
 
 document.addEventListener("click", (event) => {
-  if (event.target.closest("button")) playClickSound();
+  if (event.target.closest("button")) {
+    playClickSound();
+  }
 });
 
 function updateSoundButton() {
@@ -133,10 +227,14 @@ function updateSoundButton() {
   if (!button) return;
 
   button.textContent = state.soundsEnabled ? "🔊" : "🔇";
+
   button.setAttribute(
     "aria-label",
-    state.soundsEnabled ? "Mute button sounds" : "Enable button sounds"
+    state.soundsEnabled
+      ? "Mute button sounds"
+      : "Enable button sounds"
   );
+
   button.title = state.soundsEnabled
     ? "Mute button sounds"
     : "Enable button sounds";
@@ -147,6 +245,7 @@ const soundToggle = $("#sound-toggle");
 if (soundToggle) {
   soundToggle.addEventListener("click", () => {
     state.soundsEnabled = !state.soundsEnabled;
+
     saveData();
     updateSoundButton();
 
@@ -159,19 +258,46 @@ if (soundToggle) {
 }
 
 /* -----------------------------------------
-   THEMES
+   THEMES ♡
    ----------------------------------------- */
 
 const validThemes = [
-  "pink", "cream", "burgundy", "navy",
-  "yellow", "brown", "lavender", "dark"
+  "pink",
+  "cream",
+  "burgundy",
+  "navy",
+  "yellow",
+  "brown",
+  "lavender",
+  "dark",
+  "light",
+  "red",
+  "green"
 ];
 
+const themeNames = {
+  pink: "Cotton Candy",
+  cream: "Cloud Nine",
+  burgundy: "Cherry Cola",
+  navy: "Midnight",
+  yellow: "Lemon Drop",
+  brown: "Teddy Bear",
+  lavender: "Lavender Haze",
+  dark: "Dark Mode",
+  light: "Soft Light",
+  red: "Rose Red",
+  green: "Garden Green"
+};
+
 function applyTheme(theme) {
-  if (!validThemes.includes(theme)) theme = "pink";
+  if (!validThemes.includes(theme)) {
+    theme = "pink";
+  }
 
   state.theme = theme;
+
   document.body.dataset.theme = theme;
+
   saveData();
 
   $$(".theme-choice").forEach((button) => {
@@ -188,6 +314,7 @@ function openThemeModal() {
   if (!themeModal) return;
 
   themeModal.hidden = false;
+
   const firstChoice = $(".theme-choice");
   if (firstChoice) firstChoice.focus();
 }
@@ -199,34 +326,42 @@ function closeThemeModal() {
   $("#theme-open-button")?.focus();
 }
 
-$("#theme-open-button")?.addEventListener("click", openThemeModal);
-$("#theme-close-button")?.addEventListener("click", closeThemeModal);
+$("#theme-open-button")?.addEventListener(
+  "click",
+  openThemeModal
+);
+
+$("#theme-close-button")?.addEventListener(
+  "click",
+  closeThemeModal
+);
 
 themeModal?.addEventListener("click", (event) => {
-  if (event.target === themeModal) closeThemeModal();
+  if (event.target === themeModal) {
+    closeThemeModal();
+  }
 });
 
 $$(".theme-choice").forEach((button) => {
   button.addEventListener("click", () => {
-    applyTheme(button.dataset.themeChoice);
+    const chosenTheme = button.dataset.themeChoice;
 
-    const themeNames = {
-      pink: "Cotton Candy",
-      cream: "Cloud Nine",
-      burgundy: "Cherry Cola",
-      navy: "Midnight",
-      yellow: "Lemon Drop",
-      brown: "Teddy Bear",
-      lavender: "Lavender Haze",
-      dark: "Dark Mode"
-    };
+    if (!validThemes.includes(chosenTheme)) return;
 
-    showToast(`${themeNames[state.theme]} theme activated ♡`);
+    applyTheme(chosenTheme);
+
+    showToast(
+      `${themeNames[chosenTheme]} theme activated ♡`
+    );
   });
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && themeModal && !themeModal.hidden) {
+  if (
+    event.key === "Escape" &&
+    themeModal &&
+    !themeModal.hidden
+  ) {
     closeThemeModal();
   }
 });
@@ -252,11 +387,15 @@ function navigateTo(pageName) {
   const targetPage = $(`#page-${pageName}`);
   if (!targetPage) return;
 
-  $$(".page").forEach((page) => page.classList.remove("active-page"));
+  $$(".page").forEach((page) => {
+    page.classList.remove("active-page");
+  });
+
   targetPage.classList.add("active-page");
 
   $$(".nav-item").forEach((button) => {
     const active = button.dataset.page === pageName;
+
     button.classList.toggle("active", active);
 
     if (active) {
@@ -267,18 +406,30 @@ function navigateTo(pageName) {
   });
 
   const sectionLabel = $("#current-section");
+
   if (sectionLabel) {
-    sectionLabel.textContent = pageNames[pageName] || pageName;
+    sectionLabel.textContent =
+      pageNames[pageName] || pageName;
   }
 
-  if (pageName === "music") renderMusicPage();
-  if (pageName === "study") renderStudyTasks();
+  if (pageName === "music") {
+    renderMusicPage();
+  }
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (pageName === "study") {
+    renderStudyTasks();
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
 $$("[data-page]").forEach((button) => {
-  button.addEventListener("click", () => navigateTo(button.dataset.page));
+  button.addEventListener("click", () => {
+    navigateTo(button.dataset.page);
+  });
 });
 
 /* -----------------------------------------
@@ -302,9 +453,12 @@ const affirmations = [
 
 function renderAffirmation() {
   const text = $("#affirmation-text");
+
   if (text) {
     text.textContent =
-      affirmations[state.affirmationIndex % affirmations.length];
+      affirmations[
+        state.affirmationIndex % affirmations.length
+      ];
   }
 }
 
@@ -328,28 +482,44 @@ $("#new-affirmation")?.addEventListener("click", () => {
    ----------------------------------------- */
 
 function makeId() {
-  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID === "function"
+  ) {
     return window.crypto.randomUUID();
   }
 
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  return `${Date.now()}-${Math.random()
+    .toString(16)
+    .slice(2)}`;
 }
 
 function createTask(text) {
-  return { id: makeId(), text, completed: false };
+  return {
+    id: makeId(),
+    text,
+    completed: false
+  };
 }
 
 function toggleStudyTask(id) {
-  const task = state.studyTasks.find((item) => item.id === id);
+  const task = state.studyTasks.find(
+    (item) => item.id === id
+  );
+
   if (!task) return;
 
   task.completed = !task.completed;
+
   saveData();
   renderStudyTasks();
 }
 
 function deleteStudyTask(id) {
-  state.studyTasks = state.studyTasks.filter((item) => item.id !== id);
+  state.studyTasks = state.studyTasks.filter(
+    (item) => item.id !== id
+  );
+
   saveData();
   renderStudyTasks();
 }
@@ -358,29 +528,42 @@ function createTaskCheckbox(task, className) {
   const label = document.createElement("label");
   label.className = className;
 
-  if (task.completed) label.classList.add("completed");
+  if (task.completed) {
+    label.classList.add("completed");
+  }
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = task.completed;
-  checkbox.setAttribute("aria-label", `Complete ${task.text}`);
 
-  checkbox.addEventListener("change", () => toggleStudyTask(task.id));
+  checkbox.setAttribute(
+    "aria-label",
+    `Complete ${task.text}`
+  );
+
+  checkbox.addEventListener("change", () => {
+    toggleStudyTask(task.id);
+  });
 
   const text = document.createElement("span");
   text.textContent = task.text;
 
   label.append(checkbox, text);
+
   return label;
 }
 
 function createDeleteButton(onClick) {
   const button = document.createElement("button");
+
   button.type = "button";
   button.className = "delete-button";
   button.textContent = "×";
+
   button.setAttribute("aria-label", "Delete item");
+
   button.addEventListener("click", onClick);
+
   return button;
 }
 
@@ -398,6 +581,7 @@ function renderStudyTasks() {
   ).length;
 
   const totalCount = state.studyTasks.length;
+
   const progress = totalCount
     ? Math.round((completedCount / totalCount) * 100)
     : 0;
@@ -405,37 +589,49 @@ function renderStudyTasks() {
   if ($("#mini-progress-text")) {
     $("#mini-progress-text").textContent = `${progress}%`;
   }
+
   if ($("#mini-progress-fill")) {
     $("#mini-progress-fill").style.width = `${progress}%`;
   }
+
   if ($("#home-progress-text")) {
     $("#home-progress-text").textContent = `${progress}%`;
   }
+
   if ($("#home-progress-fill")) {
     $("#home-progress-fill").style.width = `${progress}%`;
   }
+
   if ($("#home-task-count")) {
-    $("#home-task-count").textContent = `${completedCount}/${totalCount}`;
+    $("#home-task-count").textContent =
+      `${completedCount}/${totalCount}`;
   }
 
   if (totalCount === 0) {
     const empty = document.createElement("p");
+
     empty.className = "empty-message";
     empty.textContent = "A fresh page! Add a little task ♡";
+
     miniList.append(empty.cloneNode(true));
     fullList.append(empty);
+
     return;
   }
 
   state.studyTasks.forEach((task) => {
-    miniList.append(createTaskCheckbox(task, "mini-task"));
+    miniList.append(
+      createTaskCheckbox(task, "mini-task")
+    );
 
     const row = document.createElement("div");
     row.className = "full-task";
 
     row.append(
       createTaskCheckbox(task, "full-task-label"),
-      createDeleteButton(() => deleteStudyTask(task.id))
+      createDeleteButton(() => {
+        deleteStudyTask(task.id);
+      })
     );
 
     fullList.append(row);
@@ -452,10 +648,12 @@ $("#new-task-form")?.addEventListener("submit", (event) => {
   if (!text) return;
 
   state.studyTasks.push(createTask(text));
+
   input.value = "";
 
   saveData();
   renderStudyTasks();
+
   showToast("A little task added ♡");
 });
 
@@ -464,6 +662,7 @@ $("#study-widget-toggle")?.addEventListener("click", () => {
   if (!content) return;
 
   const currentlyExpanded = !content.hidden;
+
   content.hidden = currentlyExpanded;
 
   $("#study-widget-toggle").setAttribute(
@@ -472,7 +671,8 @@ $("#study-widget-toggle")?.addEventListener("click", () => {
   );
 
   if ($("#expand-icon")) {
-    $("#expand-icon").textContent = currentlyExpanded ? "⌄" : "⌃";
+    $("#expand-icon").textContent =
+      currentlyExpanded ? "⌄" : "⌃";
   }
 });
 
@@ -495,7 +695,10 @@ function formatTime(seconds) {
 
 function renderTimer() {
   const display = $("#timer-display");
-  if (display) display.textContent = formatTime(timerRemaining);
+
+  if (display) {
+    display.textContent = formatTime(timerRemaining);
+  }
 
   document.title = timerInterval
     ? `${formatTime(timerRemaining)} · Candlee ♡`
@@ -508,26 +711,34 @@ function stopTimer() {
     timerInterval = null;
   }
 
-  if ($("#timer-start")) $("#timer-start").textContent = "Start";
+  if ($("#timer-start")) {
+    $("#timer-start").textContent = "Start";
+  }
 }
 
 function startTimer() {
   if (timerInterval !== null) {
     stopTimer();
+
     if ($("#timer-caption")) {
-      $("#timer-caption").textContent = "take a little breath ♡";
+      $("#timer-caption").textContent =
+        "take a little breath ♡";
     }
+
     renderTimer();
     return;
   }
 
-  if (timerRemaining <= 0) timerRemaining = timerDuration;
+  if (timerRemaining <= 0) {
+    timerRemaining = timerDuration;
+  }
 
   timerInterval = setInterval(() => {
     timerRemaining -= 1;
 
     if (timerRemaining <= 0) {
       timerRemaining = 0;
+
       stopTimer();
 
       if ($("#timer-caption")) {
@@ -535,14 +746,21 @@ function startTimer() {
           "you did it! time for a little break ✨";
       }
 
-      showToast("Focus session complete! You did amazing ♡");
+      showToast(
+        "Focus session complete! You did amazing ♡"
+      );
     }
 
     renderTimer();
   }, 1000);
 
-  if ($("#timer-start")) $("#timer-start").textContent = "Pause";
-  if ($("#timer-caption")) $("#timer-caption").textContent = "you've got this ♡";
+  if ($("#timer-start")) {
+    $("#timer-start").textContent = "Pause";
+  }
+
+  if ($("#timer-caption")) {
+    $("#timer-caption").textContent = "you've got this ♡";
+  }
 
   renderTimer();
 }
@@ -551,10 +769,12 @@ $("#timer-start")?.addEventListener("click", startTimer);
 
 $("#timer-reset")?.addEventListener("click", () => {
   stopTimer();
+
   timerRemaining = timerDuration;
 
   if ($("#timer-caption")) {
-    $("#timer-caption").textContent = "one thing at a time.";
+    $("#timer-caption").textContent =
+      "one thing at a time.";
   }
 
   renderTimer();
@@ -568,11 +788,15 @@ $$(".timer-presets button").forEach((button) => {
     timerRemaining = timerDuration;
 
     $$(".timer-presets button").forEach((preset) => {
-      preset.classList.toggle("selected", preset === button);
+      preset.classList.toggle(
+        "selected",
+        preset === button
+      );
     });
 
     if ($("#timer-caption")) {
-      $("#timer-caption").textContent = "one thing at a time.";
+      $("#timer-caption").textContent =
+        "one thing at a time.";
     }
 
     renderTimer();
@@ -588,7 +812,6 @@ function getSpotifyEmbedUrl(rawUrl) {
     const url = new URL(rawUrl);
     const host = url.hostname.toLowerCase();
 
-    // Shortened spotify.link URLs must be expanded first.
     if (host !== "open.spotify.com") return null;
 
     const match = url.pathname.match(
@@ -612,9 +835,12 @@ function createSpotifyFrame(embedUrl) {
   frame.width = "100%";
   frame.height = "152";
   frame.style.border = "0";
+
   frame.setAttribute("allowfullscreen", "");
+
   frame.allow =
     "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+
   frame.referrerPolicy = "strict-origin-when-cross-origin";
 
   return frame;
@@ -630,27 +856,40 @@ function renderMusicEmbeds() {
   if (pageEmbed) pageEmbed.replaceChildren();
 
   if (!state.playlist) {
-    if (playlistName) playlistName.textContent = "Your happy place";
-    if (playlistDescription) {
-      playlistDescription.textContent = "add your favorite playlist";
+    if (playlistName) {
+      playlistName.textContent = "Your happy place";
     }
+
+    if (playlistDescription) {
+      playlistDescription.textContent =
+        "add your favorite playlist";
+    }
+
     return;
   }
 
   const embedUrl = getSpotifyEmbedUrl(state.playlist);
 
   if (!embedUrl) {
-    if (playlistName) playlistName.textContent = "Playlist not added";
+    if (playlistName) {
+      playlistName.textContent = "Playlist not added";
+    }
+
     if (playlistDescription) {
       playlistDescription.textContent =
         "Use a full link from open.spotify.com";
     }
+
     return;
   }
 
-  if (playlistName) playlistName.textContent = "Your Spotify playlist ♡";
+  if (playlistName) {
+    playlistName.textContent = "Your Spotify playlist ♡";
+  }
+
   if (playlistDescription) {
-    playlistDescription.textContent = "a soundtrack for your day";
+    playlistDescription.textContent =
+      "a soundtrack for your day";
   }
 
   if (sidebarEmbed) {
@@ -671,7 +910,10 @@ function openMusicSettings() {
   const input = $("#spotify-link");
 
   if (!settings || !input) {
-    showToast("The music form is missing from this page. Please refresh ♡");
+    showToast(
+      "The music form is missing from this page. Please refresh ♡"
+    );
+
     return;
   }
 
@@ -682,12 +924,26 @@ function openMusicSettings() {
 
 function closeMusicSettings() {
   const settings = $("#music-settings");
-  if (settings) settings.hidden = true;
+
+  if (settings) {
+    settings.hidden = true;
+  }
 }
 
-$("#add-music-button")?.addEventListener("click", openMusicSettings);
-$("#music-page-add")?.addEventListener("click", openMusicSettings);
-$("#cancel-music-button")?.addEventListener("click", closeMusicSettings);
+$("#add-music-button")?.addEventListener(
+  "click",
+  openMusicSettings
+);
+
+$("#music-page-add")?.addEventListener(
+  "click",
+  openMusicSettings
+);
+
+$("#cancel-music-button")?.addEventListener(
+  "click",
+  closeMusicSettings
+);
 
 $("#save-music-button")?.addEventListener("click", () => {
   const input = $("#spotify-link");
@@ -711,6 +967,7 @@ $("#save-music-button")?.addEventListener("click", () => {
     showToast(
       "Please paste a full Spotify playlist, album, track, or show link from open.spotify.com."
     );
+
     input.focus();
     return;
   }
@@ -718,6 +975,7 @@ $("#save-music-button")?.addEventListener("click", () => {
   state.playlist = rawUrl;
 
   const saved = saveData();
+
   renderMusicEmbeds();
   closeMusicSettings();
 
@@ -739,7 +997,12 @@ function renderGoals() {
   list.replaceChildren();
 
   if (state.goals.length === 0) {
-    list.append(makeEmptyMessage("Your dreams start with one little goal ♡"));
+    list.append(
+      makeEmptyMessage(
+        "Your dreams start with one little goal ♡"
+      )
+    );
+
     return;
   }
 
@@ -753,10 +1016,15 @@ function renderGoals() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = goal.completed;
-    checkbox.setAttribute("aria-label", `Complete goal: ${goal.text}`);
+
+    checkbox.setAttribute(
+      "aria-label",
+      `Complete goal: ${goal.text}`
+    );
 
     checkbox.addEventListener("change", () => {
       goal.completed = checkbox.checked;
+
       renderGoals();
       saveData();
     });
@@ -770,7 +1038,10 @@ function renderGoals() {
       checkbox,
       text,
       createDeleteButton(() => {
-        state.goals = state.goals.filter((item) => item.id !== goal.id);
+        state.goals = state.goals.filter(
+          (item) => item.id !== goal.id
+        );
+
         saveData();
         renderGoals();
       })
@@ -789,11 +1060,17 @@ $("#goal-form")?.addEventListener("submit", (event) => {
   const text = input.value.trim();
   if (!text) return;
 
-  state.goals.push({ id: makeId(), text, completed: false });
+  state.goals.push({
+    id: makeId(),
+    text,
+    completed: false
+  });
+
   input.value = "";
 
   saveData();
   renderGoals();
+
   showToast("A new dream added to your list ♡");
 });
 
@@ -834,16 +1111,26 @@ function renderHabits() {
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.checked = state.completedHabits[today].includes(habit.id);
-    checkbox.setAttribute("aria-label", `Complete habit: ${habit.text}`);
 
-    if (checkbox.checked) row.classList.add("completed");
+    checkbox.checked =
+      state.completedHabits[today].includes(habit.id);
+
+    checkbox.setAttribute(
+      "aria-label",
+      `Complete habit: ${habit.text}`
+    );
+
+    if (checkbox.checked) {
+      row.classList.add("completed");
+    }
 
     checkbox.addEventListener("change", () => {
       const completed = state.completedHabits[today];
 
       if (checkbox.checked) {
-        if (!completed.includes(habit.id)) completed.push(habit.id);
+        if (!completed.includes(habit.id)) {
+          completed.push(habit.id);
+        }
       } else {
         state.completedHabits[today] = completed.filter(
           (id) => id !== habit.id
@@ -861,11 +1148,15 @@ function renderHabits() {
       checkbox,
       text,
       createDeleteButton(() => {
-        state.habits = state.habits.filter((item) => item.id !== habit.id);
+        state.habits = state.habits.filter(
+          (item) => item.id !== habit.id
+        );
 
         Object.keys(state.completedHabits).forEach((date) => {
           state.completedHabits[date] =
-            state.completedHabits[date].filter((id) => id !== habit.id);
+            state.completedHabits[date].filter(
+              (id) => id !== habit.id
+            );
         });
 
         saveData();
@@ -886,11 +1177,16 @@ $("#habit-form")?.addEventListener("submit", (event) => {
   const text = input.value.trim();
   if (!text) return;
 
-  state.habits.push({ id: makeId(), text });
+  state.habits.push({
+    id: makeId(),
+    text
+  });
+
   input.value = "";
 
   saveData();
   renderHabits();
+
   showToast("A little habit planted 🌱");
 });
 
@@ -906,8 +1202,11 @@ function renderLetters() {
 
   if (state.letters.length === 0) {
     list.append(
-      makeEmptyMessage("Your future self is waiting for a little letter ♡")
+      makeEmptyMessage(
+        "Your future self is waiting for a little letter ♡"
+      )
     );
+
     return;
   }
 
@@ -916,6 +1215,7 @@ function renderLetters() {
     row.className = "letter-item";
 
     const content = document.createElement("div");
+
     const title = document.createElement("strong");
     title.textContent = letter.title;
 
@@ -929,20 +1229,25 @@ function renderLetters() {
       status.textContent = "Ready to open ♡";
 
       const openButton = document.createElement("button");
+
       openButton.className = "soft-button";
       openButton.type = "button";
       openButton.textContent = "Read letter";
 
       openButton.addEventListener("click", () => {
-        const existing = content.querySelector(".letter-content");
+        const existing =
+          content.querySelector(".letter-content");
 
         if (existing) {
           existing.remove();
           openButton.textContent = "Read letter";
         } else {
-          const letterBody = document.createElement("div");
+          const letterBody =
+            document.createElement("div");
+
           letterBody.className = "letter-content";
           letterBody.textContent = letter.body;
+
           content.append(letterBody);
           openButton.textContent = "Close letter";
         }
@@ -950,14 +1255,19 @@ function renderLetters() {
 
       content.append(title, date, status, openButton);
     } else {
-      status.textContent = "Sealed until your chosen date 💌";
+      status.textContent =
+        "Sealed until your chosen date 💌";
+
       content.append(title, date, status);
     }
 
     row.append(
       content,
       createDeleteButton(() => {
-        state.letters = state.letters.filter((item) => item.id !== letter.id);
+        state.letters = state.letters.filter(
+          (item) => item.id !== letter.id
+        );
+
         saveData();
         renderLetters();
       })
@@ -981,7 +1291,12 @@ $("#letter-form")?.addEventListener("submit", (event) => {
     return;
   }
 
-  state.letters.push({ id: makeId(), title, openDate, body });
+  state.letters.push({
+    id: makeId(),
+    title,
+    openDate,
+    body
+  });
 
   $("#letter-title").value = "";
   $("#letter-date").value = "";
@@ -989,6 +1304,7 @@ $("#letter-form")?.addEventListener("submit", (event) => {
 
   saveData();
   renderLetters();
+
   showToast("Your letter has been sealed 💌");
 });
 
@@ -1003,7 +1319,12 @@ function renderCountdowns() {
   list.replaceChildren();
 
   if (state.countdowns.length === 0) {
-    list.append(makeEmptyMessage("Add a little moment to look forward to ♡"));
+    list.append(
+      makeEmptyMessage(
+        "Add a little moment to look forward to ♡"
+      )
+    );
+
     return;
   }
 
@@ -1012,22 +1333,29 @@ function renderCountdowns() {
     row.className = "countdown-item";
 
     const info = document.createElement("div");
+
     const title = document.createElement("strong");
     title.textContent = countdown.title;
 
     const date = document.createElement("p");
-    date.textContent = new Date(countdown.date).toLocaleString();
+    date.textContent =
+      new Date(countdown.date).toLocaleString();
 
     const number = document.createElement("p");
     number.className = "countdown-number";
 
-    const difference = new Date(countdown.date).getTime() - Date.now();
+    const difference =
+      new Date(countdown.date).getTime() - Date.now();
 
     if (difference <= 0) {
       number.textContent = "It's time! ♡";
     } else {
-      const days = Math.ceil(difference / (1000 * 60 * 60 * 24));
-      number.textContent = `${days} day${days === 1 ? "" : "s"} to go`;
+      const days = Math.ceil(
+        difference / (1000 * 60 * 60 * 24)
+      );
+
+      number.textContent =
+        `${days} day${days === 1 ? "" : "s"} to go`;
     }
 
     info.append(title, date, number);
@@ -1061,14 +1389,21 @@ $("#countdown-form")?.addEventListener("submit", (event) => {
     return;
   }
 
-  state.countdowns.push({ id: makeId(), title, date });
+  state.countdowns.push({
+    id: makeId(),
+    title,
+    date
+  });
 
   $("#countdown-title").value = "";
   $("#countdown-date").value = "";
 
   saveData();
   renderCountdowns();
-  showToast("Countdown added! Something to look forward to ♡");
+
+  showToast(
+    "Countdown added! Something to look forward to ♡"
+  );
 });
 
 /* -----------------------------------------
@@ -1085,7 +1420,9 @@ function money(amount) {
 function getBudgetTotal() {
   return state.budgetEntries.reduce((total, entry) => {
     return total + (
-      entry.type === "income" ? entry.amount : -entry.amount
+      entry.type === "income"
+        ? entry.amount
+        : -entry.amount
     );
   }, 0);
 }
@@ -1100,19 +1437,35 @@ function renderBudget() {
 
   const total = getBudgetTotal();
 
-  if (totalDisplay) totalDisplay.textContent = money(total);
-  if (goalDisplay) goalDisplay.textContent = money(state.budgetGoal);
+  if (totalDisplay) {
+    totalDisplay.textContent = money(total);
+  }
+
+  if (goalDisplay) {
+    goalDisplay.textContent = money(state.budgetGoal);
+  }
 
   const progress = state.budgetGoal > 0
-    ? Math.max(0, Math.min(100, (total / state.budgetGoal) * 100))
+    ? Math.max(
+        0,
+        Math.min(
+          100,
+          (total / state.budgetGoal) * 100
+        )
+      )
     : 0;
 
-  if (progressFill) progressFill.style.width = `${progress}%`;
+  if (progressFill) {
+    progressFill.style.width = `${progress}%`;
+  }
 
   list.replaceChildren();
 
   if (state.budgetEntries.length === 0) {
-    list.append(makeEmptyMessage("Your savings story starts here ♡"));
+    list.append(
+      makeEmptyMessage("Your savings story starts here ♡")
+    );
+
     return;
   }
 
@@ -1121,16 +1474,23 @@ function renderBudget() {
     row.className = "budget-entry";
 
     const info = document.createElement("div");
+
     const title = document.createElement("strong");
     title.textContent = entry.name;
 
     const description = document.createElement("p");
+
     description.textContent =
-      entry.type === "income" ? "Saved / earned" : "Spent";
+      entry.type === "income"
+        ? "Saved / earned"
+        : "Spent";
 
     const amount = document.createElement("strong");
+
     amount.className =
-      entry.type === "income" ? "income-amount" : "expense-amount";
+      entry.type === "income"
+        ? "income-amount"
+        : "expense-amount";
 
     amount.textContent =
       `${entry.type === "income" ? "+" : "−"}${money(entry.amount)}`;
@@ -1172,6 +1532,7 @@ $("#budget-goal-form")?.addEventListener("submit", (event) => {
 
   saveData();
   renderBudget();
+
   showToast("Savings goal updated ♡");
 });
 
@@ -1187,13 +1548,19 @@ $("#budget-entry-form")?.addEventListener("submit", (event) => {
     return;
   }
 
-  state.budgetEntries.push({ id: makeId(), name, amount, type });
+  state.budgetEntries.push({
+    id: makeId(),
+    name,
+    amount,
+    type
+  });
 
   $("#budget-entry-name").value = "";
   $("#budget-entry-amount").value = "";
 
   saveData();
   renderBudget();
+
   showToast("Budget entry added ♡");
 });
 
@@ -1208,7 +1575,10 @@ function renderVisions() {
   list.replaceChildren();
 
   if (state.visions.length === 0) {
-    list.append(makeEmptyMessage("Leave a little room for your dreams ✨"));
+    list.append(
+      makeEmptyMessage("Leave a little room for your dreams ✨")
+    );
+
     return;
   }
 
@@ -1217,11 +1587,13 @@ function renderVisions() {
     row.className = "vision-item";
 
     const info = document.createElement("div");
+
     const title = document.createElement("strong");
     title.textContent = `✨ ${vision.title}`;
 
     const note = document.createElement("p");
-    note.textContent = vision.note || "A dream worth remembering ♡";
+    note.textContent =
+      vision.note || "A dream worth remembering ♡";
 
     info.append(title, note);
 
@@ -1249,15 +1621,341 @@ $("#vision-form")?.addEventListener("submit", (event) => {
 
   if (!title) return;
 
-  state.visions.push({ id: makeId(), title, note });
+  state.visions.push({
+    id: makeId(),
+    title,
+    note
+  });
 
   $("#vision-title").value = "";
   $("#vision-note").value = "";
 
   saveData();
   renderVisions();
+
   showToast("A little dream added to your board ✨");
 });
+
+/* -----------------------------------------
+   DIGITAL NOTEBOOK ♡
+   ----------------------------------------- */
+
+let currentNotebookPageId = null;
+
+function getCurrentNotebookPage() {
+  return state.notebookPages.find(
+    (page) => page.id === currentNotebookPageId
+  ) || null;
+}
+
+function setNotebookSaveStatus(message) {
+  const status = $("#notebook-save-status");
+
+  if (status) {
+    status.textContent = message;
+  }
+}
+
+function renderNotebookPageList() {
+  const list = $("#notebook-page-list");
+  if (!list) return;
+
+  list.replaceChildren();
+
+  const searchTerm = $("#notebook-search")?.value
+    .trim()
+    .toLowerCase() || "";
+
+  const pages = [...state.notebookPages]
+    .filter((page) => {
+      const searchableText = [
+        page.title,
+        page.subject,
+        page.body
+      ].join(" ").toLowerCase();
+
+      return searchableText.includes(searchTerm);
+    })
+    .sort((a, b) => {
+      return (b.updatedAt || "").localeCompare(
+        a.updatedAt || ""
+      );
+    });
+
+  if (pages.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "notebook-empty";
+
+    empty.textContent = searchTerm
+      ? "No pages match your search. Try another word ♡"
+      : "Your notebook is waiting for its first page. Click ＋ New Page to begin.";
+
+    list.append(empty);
+    return;
+  }
+
+  pages.forEach((page) => {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "notebook-page-button";
+
+    button.classList.toggle(
+      "active",
+      page.id === currentNotebookPageId
+    );
+
+    button.setAttribute(
+      "aria-pressed",
+      String(page.id === currentNotebookPageId)
+    );
+
+    const title = document.createElement("strong");
+
+    title.textContent =
+      page.title.trim() || "Untitled page";
+
+    const subject = document.createElement("span");
+
+    subject.textContent =
+      page.subject.trim() || "Unsorted notes";
+
+    button.append(title, subject);
+
+    button.addEventListener("click", () => {
+      selectNotebookPage(page.id, true);
+    });
+
+    list.append(button);
+  });
+}
+
+function selectNotebookPage(pageId, animate = false) {
+  const page = state.notebookPages.find(
+    (item) => item.id === pageId
+  );
+
+  if (!page) return;
+
+  currentNotebookPageId = page.id;
+
+  const subject = $("#notebook-page-subject");
+  const title = $("#notebook-page-title");
+  const body = $("#notebook-page-body");
+  const deleteButton = $("#notebook-delete-page");
+  const paper = $("#notebook-paper");
+
+  if (!subject || !title || !body || !deleteButton) {
+    return;
+  }
+
+  subject.disabled = false;
+  subject.value = page.subject || "";
+
+  title.disabled = false;
+  title.value = page.title || "";
+
+  body.disabled = false;
+  body.value = page.body || "";
+
+  deleteButton.disabled = false;
+
+  setNotebookSaveStatus("Your page is ready ♡");
+  renderNotebookPageList();
+
+  if (animate && paper) {
+    paper.classList.remove("page-turn");
+
+    void paper.offsetWidth;
+
+    paper.classList.add("page-turn");
+  }
+}
+
+function saveNotebookPage() {
+  const page = getCurrentNotebookPage();
+  if (!page) return;
+
+  const subject = $("#notebook-page-subject");
+  const title = $("#notebook-page-title");
+  const body = $("#notebook-page-body");
+
+  if (!subject || !title || !body) return;
+
+  page.subject = subject.value;
+  page.title = title.value;
+  page.body = body.value;
+
+  page.updatedAt = new Date().toISOString();
+
+  const saved = saveData();
+
+  setNotebookSaveStatus(
+    saved
+      ? "Saved in this browser ♡"
+      : "Couldn't save — please copy your notes."
+  );
+
+  renderNotebookPageList();
+}
+
+function createNotebookPage() {
+  const page = {
+    id: makeId(),
+    subject: "",
+    title: "",
+    body: "",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  state.notebookPages.push(page);
+
+  if (!saveData()) {
+    state.notebookPages = state.notebookPages.filter(
+      (item) => item.id !== page.id
+    );
+
+    showToast("Your browser couldn't save a new page ♡");
+    return;
+  }
+
+  const search = $("#notebook-search");
+
+  if (search) {
+    search.value = "";
+  }
+
+  selectNotebookPage(page.id, true);
+  renderNotebookPageList();
+
+  $("#notebook-page-title")?.focus();
+
+  showToast("A fresh notebook page, just for you ♡");
+}
+
+function deleteNotebookPage() {
+  const page = getCurrentNotebookPage();
+  if (!page) return;
+
+  const pageName =
+    page.title.trim() || "this untitled page";
+
+  if (!window.confirm(
+    `Delete "${pageName}"? This cannot be undone.`
+  )) {
+    return;
+  }
+
+  const previousPages = [...state.notebookPages];
+
+  state.notebookPages = state.notebookPages.filter(
+    (item) => item.id !== page.id
+  );
+
+  currentNotebookPageId = null;
+
+  if (!saveData()) {
+    state.notebookPages = previousPages;
+
+    selectNotebookPage(page.id);
+
+    showToast("Your browser couldn't save that change ♡");
+    return;
+  }
+
+  const subject = $("#notebook-page-subject");
+  const title = $("#notebook-page-title");
+  const body = $("#notebook-page-body");
+  const deleteButton = $("#notebook-delete-page");
+
+  if (subject) {
+    subject.value = "";
+    subject.disabled = true;
+  }
+
+  if (title) {
+    title.value = "";
+    title.disabled = true;
+  }
+
+  if (body) {
+    body.value = "";
+    body.disabled = true;
+  }
+
+  if (deleteButton) {
+    deleteButton.disabled = true;
+  }
+
+  setNotebookSaveStatus("Choose or create a page ♡");
+
+  renderNotebookPageList();
+
+  showToast("Page deleted ♡");
+}
+
+function initializeNotebook() {
+  const list = $("#notebook-page-list");
+  const paper = $("#notebook-paper");
+  const subject = $("#notebook-page-subject");
+  const title = $("#notebook-page-title");
+  const body = $("#notebook-page-body");
+  const newButton = $("#notebook-new-page");
+  const deleteButton = $("#notebook-delete-page");
+  const search = $("#notebook-search");
+
+  if (
+    !list ||
+    !paper ||
+    !subject ||
+    !title ||
+    !body ||
+    !newButton ||
+    !deleteButton
+  ) {
+    return;
+  }
+
+  newButton.addEventListener(
+    "click",
+    createNotebookPage
+  );
+
+  deleteButton.addEventListener(
+    "click",
+    deleteNotebookPage
+  );
+
+  [subject, title, body].forEach((field) => {
+    field.addEventListener("input", saveNotebookPage);
+  });
+
+  search?.addEventListener(
+    "input",
+    renderNotebookPageList
+  );
+
+  paper.addEventListener("animationend", (event) => {
+    if (event.animationName === "notebook-page-turn") {
+      paper.classList.remove("page-turn");
+    }
+  });
+
+  renderNotebookPageList();
+
+  const mostRecentPage = [...state.notebookPages].sort(
+    (a, b) => (b.updatedAt || "").localeCompare(
+      a.updatedAt || ""
+    )
+  )[0];
+
+  if (mostRecentPage) {
+    selectNotebookPage(mostRecentPage.id);
+  } else {
+    setNotebookSaveStatus("Create a page to begin ♡");
+  }
+}
 
 /* -----------------------------------------
    HELPERS
@@ -1265,17 +1963,20 @@ $("#vision-form")?.addEventListener("submit", (event) => {
 
 function makeEmptyMessage(message) {
   const element = document.createElement("p");
+
   element.className = "empty-message";
   element.textContent = message;
+
   return element;
 }
 
 /* -----------------------------------------
-   INITIALIZE CANDLEE
+   INITIALIZE CANDLEE ♡
    ----------------------------------------- */
 
 function initializeCandlee() {
   applyTheme(state.theme);
+
   updateSoundButton();
   renderAffirmation();
   renderStudyTasks();
@@ -1287,26 +1988,31 @@ function initializeCandlee() {
   renderBudget();
   renderVisions();
   renderTimer();
+  initializeNotebook();
 
   const studyDateLabel = $("#study-date-label");
 
   if (studyDateLabel) {
-    studyDateLabel.textContent = new Date().toLocaleDateString(undefined, {
-      weekday: "short",
-      month: "short",
-      day: "numeric"
-    });
+    studyDateLabel.textContent =
+      new Date().toLocaleDateString(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "numeric"
+      });
   }
 
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) renderCountdowns();
+    if (!document.hidden) {
+      renderCountdowns();
+    }
   });
 }
 
 initializeCandlee();
-// CANDLEE MUSIC BUTTON FIX ♡
-// Keeps the music buttons working even if the page
-// finishes loading its buttons after this script runs.
+
+/* -----------------------------------------
+   MUSIC BUTTON FIX ♡
+   ----------------------------------------- */
 
 document.addEventListener("click", function (event) {
   const addButton = event.target.closest(
@@ -1315,11 +2021,17 @@ document.addEventListener("click", function (event) {
 
   if (!addButton) return;
 
-  const musicSettings = document.getElementById("music-settings");
-  const spotifyInput = document.getElementById("spotify-link");
+  const musicSettings =
+    document.getElementById("music-settings");
+
+  const spotifyInput =
+    document.getElementById("spotify-link");
 
   if (!musicSettings || !spotifyInput) {
-    console.error("Candlee could not find the music form.");
+    console.error(
+      "Candlee could not find the music form."
+    );
+
     return;
   }
 
@@ -1327,8 +2039,6 @@ document.addEventListener("click", function (event) {
 
   musicSettings.hidden = false;
 
-  spotifyInput.value =
-    typeof state !== "undefined" ? state.playlist : "";
-
+  spotifyInput.value = state.playlist;
   spotifyInput.focus();
 });
