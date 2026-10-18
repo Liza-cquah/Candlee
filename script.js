@@ -1304,3 +1304,31 @@ function initializeCandlee() {
 }
 
 initializeCandlee();
+// CANDLEE MUSIC BUTTON FIX ♡
+// Keeps the music buttons working even if the page
+// finishes loading its buttons after this script runs.
+
+document.addEventListener("click", function (event) {
+  const addButton = event.target.closest(
+    "#add-music-button, #music-page-add"
+  );
+
+  if (!addButton) return;
+
+  const musicSettings = document.getElementById("music-settings");
+  const spotifyInput = document.getElementById("spotify-link");
+
+  if (!musicSettings || !spotifyInput) {
+    console.error("Candlee could not find the music form.");
+    return;
+  }
+
+  event.preventDefault();
+
+  musicSettings.hidden = false;
+
+  spotifyInput.value =
+    typeof state !== "undefined" ? state.playlist : "";
+
+  spotifyInput.focus();
+});
