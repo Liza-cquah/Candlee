@@ -1,19 +1,20 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Candlee | Your Dashboard</title>
+  <title>My Candlee | Dashboard</title>
 
   <style>
     :root {
-      --cream: #fffaf3;
-      --pink: #f2d8d5;
-      --brown: #60483c;
-      --brown-light: #8a7062;
+      --cream: #fffaf5;
+      --pink: #f4dce3;
+      --dark-pink: #d88fa5;
+      --brown: #624b42;
+      --light-brown: #92776b;
       --white: #ffffff;
-      --border: #eadbd0;
+      --border: #eadbd3;
     }
 
     * {
@@ -23,9 +24,11 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #f8e7eb, transparent 35%),
+        var(--cream);
       color: var(--brown);
-      background: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
     }
 
     header {
@@ -33,113 +36,164 @@
       justify-content: space-between;
       align-items: center;
       gap: 15px;
-      padding: 20px 6%;
-      background: white;
+      padding: 18px 6%;
+      background: rgba(255, 255, 255, 0.85);
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
     }
 
     .logo {
-      font-family: Georgia, serif;
-      font-size: 32px;
+      font-size: 27px;
       font-weight: bold;
+    }
+
+    .logo span {
+      color: var(--dark-pink);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    #userEmail {
+      color: var(--light-brown);
+      font-size: 13px;
+      overflow-wrap: anywhere;
     }
 
     button {
       border: none;
       border-radius: 12px;
-      padding: 12px 18px;
-      background: var(--brown);
-      color: white;
-      font-weight: bold;
+      padding: 11px 16px;
+      background: var(--pink);
+      color: var(--brown);
       cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .signout {
+      background: var(--dark-pink);
+      color: white;
     }
 
     main {
-      width: min(1100px, 90%);
-      margin: 45px auto;
+      max-width: 1150px;
+      margin: auto;
+      padding: 45px 22px;
     }
 
     .welcome {
-      padding: 35px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, #f8e7e3, #fff1df);
-      margin-bottom: 30px;
+      margin-bottom: 32px;
     }
 
-    h1 {
-      font-family: Georgia, serif;
-      font-size: clamp(30px, 5vw, 44px);
-      margin-top: 0;
-      margin-bottom: 12px;
+    .welcome .eyebrow {
+      color: var(--dark-pink);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .welcome h1 {
+      font-size: clamp(30px, 5vw, 46px);
+      margin: 12px 0;
     }
 
     .welcome p {
+      color: var(--light-brown);
       line-height: 1.7;
-      color: var(--brown-light);
+      max-width: 620px;
     }
 
-    .section-title {
-      font-family: Georgia, serif;
-      font-size: 25px;
-      margin-bottom: 18px;
+    .quote {
+      margin: 30px 0;
+      padding: 25px;
+      background: #f8e9ed;
+      border: 1px solid #efd5dd;
+      border-radius: 20px;
+      line-height: 1.8;
+    }
+
+    .quote strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--light-brown);
+    }
+
+    .section-heading {
+      margin: 35px 0 18px;
+      font-size: 23px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
     }
 
-    .card {
+    .feature {
       padding: 24px;
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--border);
       border-radius: 20px;
+      min-height: 175px;
+      box-shadow: 0 8px 25px rgba(98, 75, 66, 0.04);
     }
 
-    .card .icon {
-      font-size: 30px;
+    .feature .icon {
+      font-size: 29px;
     }
 
-    .card h3 {
-      margin-bottom: 8px;
+    .feature h3 {
+      margin: 14px 0 8px;
+      font-size: 19px;
     }
 
-    .card p {
-      color: var(--brown-light);
-      line-height: 1.6;
+    .feature p {
+      color: var(--light-brown);
       font-size: 14px;
-    }
-
-    .note {
-      margin-top: 30px;
-      padding: 18px;
-      background: #f7eee7;
-      border-radius: 16px;
       line-height: 1.6;
-      font-size: 14px;
+      margin: 0;
     }
 
-    #status {
-      padding: 30px;
+    .coming-soon {
+      display: inline-block;
+      margin-top: 13px;
+      padding: 6px 9px;
+      background: var(--pink);
+      border-radius: 8px;
+      font-size: 11px;
+    }
+
+    .loading {
       text-align: center;
+      padding: 60px 20px;
+      color: var(--light-brown);
     }
 
-    @media (max-width: 500px) {
+    footer {
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--light-brown);
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
       header {
-        padding: 18px 5%;
+        padding: 18px 20px;
       }
 
-      .logo {
-        font-size: 27px;
-      }
-
-      button {
-        padding: 10px 12px;
-      }
-
-      .welcome {
-        padding: 25px;
+      main {
+        padding-top: 30px;
       }
     }
   </style>
@@ -147,77 +201,108 @@
 
 <body>
 
-  <header>
-    <div class="logo">candlee 🌷</div>
+  <div id="loading" class="loading">
+    🕯️ Opening your little corner of the world…
+  </div>
 
-    <button id="signoutButton" type="button">
-      Sign Out
-    </button>
-  </header>
+  <div id="app" hidden>
 
-  <main>
-    <div id="status">Opening your cozy corner... 💗</div>
+    <header>
+      <div class="logo">🕯️ Candlee<span>.</span></div>
 
-    <div id="dashboard" hidden>
+      <div class="header-right">
+        <span id="userEmail"></span>
+        <button class="signout" id="signoutButton">Sign out</button>
+      </div>
+    </header>
+
+    <main>
 
       <section class="welcome">
-        <h1>Welcome to your space. ♡</h1>
-
-        <p id="welcomeText">
-          Your journey, your goals, your little moments of growth.
+        <div class="eyebrow">Your personal space ♡</div>
+        <h1 id="welcomeTitle">Welcome to Candlee!</h1>
+        <p>
+          A gentle reminder that you don't have to have everything
+          figured out today. Take your time, dream a little, and
+          keep becoming the person you want to be.
         </p>
       </section>
 
-      <h2 class="section-title">Your Candlee corner</h2>
+      <section class="quote">
+        “You are allowed to grow at your own pace.
+        Small steps still move you forward.” 
+        <strong>♡ A little reminder from Candlee</strong>
+      </section>
+
+      <h2 class="section-heading">Your little world 🌷</h2>
 
       <section class="grid">
 
-        <article class="card">
-          <div class="icon">🌷</div>
-          <h3>My Vision Board</h3>
-          <p>A place for the dreams and ideas you're growing toward.</p>
+        <article class="feature">
+          <div class="icon">🎨</div>
+          <h3>Vision Board</h3>
+          <p>Collect the dreams, images, and little things that inspire you.</p>
+          <span class="coming-soon">Coming soon</span>
         </article>
 
-        <article class="card">
-          <div class="icon">✨</div>
-          <h3>My Goals</h3>
-          <p>Keep your goals in sight and celebrate every little step.</p>
+        <article class="feature">
+          <div class="icon">🎯</div>
+          <h3>Goals & Progress</h3>
+          <p>Turn your dreams into manageable steps and celebrate progress.</p>
+          <span class="coming-soon">Coming soon</span>
         </article>
 
-        <article class="card">
+        <article class="feature">
           <div class="icon">🌱</div>
           <h3>Habit Tracker</h3>
-          <p>Build routines that help you become the person you want to be.</p>
+          <p>Build gentle routines and keep track of the habits that matter.</p>
+          <span class="coming-soon">Coming soon</span>
         </article>
 
-        <article class="card">
+        <article class="feature">
           <div class="icon">📚</div>
           <h3>Study Studio</h3>
-          <p>A cozy space for studying, planning, and learning.</p>
+          <p>Organize your studies with notes, flashcards, timers, and more.</p>
+          <span class="coming-soon">Coming soon</span>
         </article>
 
-        <article class="card">
+        <article class="feature">
           <div class="icon">💌</div>
           <h3>Future Letters</h3>
-          <p>Write to your future self and save messages for another day.</p>
+          <p>Write a letter to your future self and open it when the time comes.</p>
+          <span class="coming-soon">Coming soon</span>
         </article>
 
-        <article class="card">
+        <article class="feature">
           <div class="icon">🎵</div>
-          <h3>My Music</h3>
-          <p>Make room for the playlists that make your day better.</p>
+          <h3>Study & Chill</h3>
+          <p>Make space for music, peaceful moments, and focused work.</p>
+          <span class="coming-soon">Coming soon</span>
+        </article>
+
+        <article class="feature">
+          <div class="icon">💰</div>
+          <h3>Savings Corner</h3>
+          <p>Keep an eye on your savings goals and celebrate every milestone.</p>
+          <span class="coming-soon">Coming soon</span>
+        </article>
+
+        <article class="feature">
+          <div class="icon">✨</div>
+          <h3>Daily Affirmations</h3>
+          <p>Find a little encouragement whenever you need a reminder of your worth.</p>
+          <span class="coming-soon">Coming soon</span>
         </article>
 
       </section>
 
-      <div class="note">
-        💗 Welcome to the beginning of your Candlee journey.
-        These are starter cards for now. We'll connect each feature
-        and add secure saving as we build the rest of your website.
-      </div>
+    </main>
 
-    </div>
-  </main>
+    <footer>
+      Made with love, just for your next chapter ♡
+    </footer>
+
+  </div>
 
   <script type="module">
     import { createClient } from
@@ -234,53 +319,53 @@
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    const status = document.getElementById("status");
-    const dashboard = document.getElementById("dashboard");
-    const welcomeText = document.getElementById("welcomeText");
-    const signoutButton = document.getElementById("signoutButton");
-
     async function loadDashboard() {
       const { data, error } = await supabase.auth.getSession();
 
       if (error || !data.session) {
-        window.location.replace(
-          new URL("signin.html", window.location.href).href
-        );
+        window.location.replace("signin.html");
         return;
       }
 
-      const email = data.session.user.email;
+      const user = data.session.user;
+      const name =
+        user.user_metadata?.display_name ||
+        user.email?.split("@")[0] ||
+        "friend";
 
-      welcomeText.textContent = email
-        ? "You're signed in as " + email +
-          ". Your journey, your goals, your little moments of growth. ♡"
-        : "Your journey, your goals, your little moments of growth. ♡";
+      document.getElementById("userEmail").textContent =
+        user.email || "";
 
-      status.hidden = true;
-      dashboard.hidden = false;
+      document.getElementById("welcomeTitle").textContent =
+        `Welcome to Candlee, ${name}! ♡`;
+
+      document.getElementById("loading").hidden = true;
+      document.getElementById("app").hidden = false;
     }
 
-    signoutButton.addEventListener("click", async () => {
-      signoutButton.disabled = true;
-      signoutButton.textContent = "Signing out...";
+    document.getElementById("signoutButton").addEventListener(
+      "click",
+      async () => {
+        const button = document.getElementById("signoutButton");
+        button.disabled = true;
+        button.textContent = "Signing out…";
 
-      const { error } = await supabase.auth.signOut();
+        const { error } = await supabase.auth.signOut();
 
-      if (error) {
-        signoutButton.disabled = false;
-        signoutButton.textContent = "Sign Out";
-        status.hidden = false;
-        status.textContent = "We couldn't sign you out. Please try again.";
-        return;
+        if (error) {
+          alert("We couldn't sign you out. Please try again.");
+          button.disabled = false;
+          button.textContent = "Sign out";
+          return;
+        }
+
+        window.location.replace("signin.html");
       }
-
-      window.location.replace(
-        new URL("signin.html", window.location.href).href
-      );
-    });
+    );
 
     loadDashboard();
   </script>
 
 </body>
 </html>
+```
