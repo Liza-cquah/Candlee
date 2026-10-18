@@ -2224,3 +2224,83 @@ textarea::placeholder {
     transition: none;
   }
 }
+
+/* =========================================
+   NEW CANDLEE THEMES ♡
+   ========================================= */
+
+/* Daydream — airy blue and soft white */
+body[data-theme="light"] {
+  --background: #f1f8ff;
+  --sidebar: #fbfdff;
+  --surface: #ffffff;
+  --surface-soft: #e4f1ff;
+  --accent: #8bb8e8;
+  --accent-strong: #568cc7;
+  --accent-light: #d4e8fc;
+  --text: #354b63;
+  --text-soft: #7b91a8;
+  --border: #dceaf7;
+}
+
+/* Love Letter — romantic red and blush */
+body[data-theme="red"] {
+  --background: #fff4f4;
+  --sidebar: #fffafa;
+  --surface: #ffffff;
+  --surface-soft: #ffe3e5;
+  --accent: #df737d;
+  --accent-strong: #bb4654;
+  --accent-light: #f8cbd0;
+  --text: #66343b;
+  --text-soft: #a4777d;
+  --border: #f1d8db;
+}
+
+/* Secret Garden — sage green and fresh cream */
+body[data-theme="green"] {
+  --background: #f3f8f0;
+  --sidebar: #fbfdf8;
+  --surface: #ffffff;
+  --surface-soft: #e4eedc;
+  --accent: #8baa78;
+  --accent-strong: #5d8050;
+  --accent-light: #d4e5c9;
+  --text: #3e5139;
+  --text-soft: #7e9276;
+  --border: #dce7d4;
+}
+
+/* Eclipse — deep, dreamy night */
+body[data-theme="dark"] {
+  --background: #19171e;
+  --sidebar: #211e28;
+  --surface: #27232f;
+  --surface-soft: #342b3c;
+  --accent: #d69ab9;
+  --accent-strong: #efb5d0;
+  --accent-light: #493044;
+  --text: #f6eaf1;
+  --text-soft: #c1adbd;
+  --border: #403543;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Theme picker color swatches */
+.light-swatch {
+  background: #8bb8e8;
+}
+
+.red-swatch {
+  background: #df737d;
+}
+
+.green-swatch {
+  background: #8baa78;
+}
+
+/* Keep the Eclipse swatch consistent */
+.dark-swatch {
+  background: #27232f;
+}
