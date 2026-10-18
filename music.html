@@ -84,8 +84,8 @@
       font-size: clamp(2rem, 6vw, 3.3rem);
     }
 
-    .hero p {
-      max-width: 600px;
+    .hero p,
+    .helper {
       line-height: 1.7;
     }
 
@@ -117,7 +117,6 @@
 
     .helper {
       color: var(--brown-light);
-      line-height: 1.6;
       font-size: 0.94rem;
     }
 
@@ -170,12 +169,12 @@
     }
 
     .spotify-button {
-      margin-top: 12px;
       color: #123e24;
       background: #dff5e5;
     }
 
     .danger {
+      margin-top: 12px;
       color: #984b54;
       background: #fbe9eb;
     }
@@ -204,8 +203,8 @@
     }
 
     .account {
-      font-size: 0.88rem;
       color: var(--brown-light);
+      font-size: 0.88rem;
       overflow-wrap: anywhere;
     }
 
@@ -244,10 +243,6 @@
       border: 0;
       border-radius: 12px;
       background: #f4eee8;
-    }
-
-    .music-card .danger {
-      margin-top: 12px;
     }
 
     .empty {
@@ -296,8 +291,7 @@
       <h1>Your little music corner 🎧</h1>
       <p>
         Save the songs and playlists that make your days feel special.
-        Create your own little collection for studying, relaxing,
-        romanticizing your life, or simply being you.
+        Create your own collection for studying, relaxing, or simply being you.
       </p>
       <div class="spotify-mark">● Spotify inside</div>
     </section>
@@ -305,12 +299,12 @@
     <section class="panel">
       <h2>Add music to your library ♡</h2>
       <p class="helper">
-        Paste a Spotify playlist, album, or track link below.
-        Give it a name that makes you smile, then save it to your library.
+        Copy a Spotify playlist, album, or track link using Spotify's Share
+        option. Give it a name and save it to your personal Candlee library.
       </p>
 
       <form id="musicForm">
-        <label for="musicTitle">What would you like to call it?</label>
+        <label for="musicTitle">Name your music</label>
         <input
           id="musicTitle"
           type="text"
@@ -342,12 +336,14 @@
           <h2>My Spotify library 🎶</h2>
           <p class="account" id="accountText">Checking your account…</p>
         </div>
+
         <button class="spotify-button" id="refreshButton" type="button">
           Refresh library ↻
         </button>
       </div>
 
       <div id="libraryMessage" class="message" role="status" aria-live="polite"></div>
+
       <div id="musicList" class="music-list">
         <div class="empty">Loading your music… ♡</div>
       </div>
@@ -360,7 +356,7 @@
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
     const SUPABASE_URL = "https://snodsrcvlezthsenvrli.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_Qv2qVkdWnjxP52zub-OLnA_7Teh9AYR";
+    const SUPABASE_KEY = "sb_publishable_Qv2gVkdWnjxP52zub-OLnA_7Teh9AYR";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -398,8 +394,7 @@
 
       if (
         url.protocol !== "https:" ||
-        !(url.hostname === "open.spotify.com" ||
-          url.hostname === "www.open.spotify.com")
+        !["open.spotify.com", "www.open.spotify.com"].includes(url.hostname)
       ) {
         return null;
       }
@@ -418,8 +413,10 @@
 
     function makeElement(tag, className, text) {
       const element = document.createElement(tag);
+
       if (className) element.className = className;
       if (text !== undefined) element.textContent = text;
+
       return element;
     }
 
@@ -442,177 +439,11 @@
 
       if (error) {
         musicList.replaceChildren();
+
         showMessage(
           libraryMessage,
-          "We couldn't load your library. Please check your database setup and try again.",
+          "Couldn't load your library: " + error.message,
           "error"
         );
-        console.error("Spotify library load error:", error);
-        return;
-      }
 
-      musicList.replaceChildren();
-
-      if (!data || data.length === 0) {
-        musicList.appendChild(
-          makeElement(
-            "div",
-            "empty",
-            "Your library is waiting for its first song. Add a Spotify link above to get started! 🎶"
-          )
-        );
-        return;
-      }
-
-      for (const item of data) {
-        const embedUrl = getSpotifyEmbedUrl(item.spotify_url);
-        if (!embedUrl) continue;
-
-        const card = makeElement("article", "music-card");
-        const heading = makeElement("h3", "", item.title);
-        const player = document.createElement("iframe");
-
-        player.src = embedUrl;
-        player.title = "Spotify player: " + item.title;
-        player.loading = "lazy";
-        player.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-        player.referrerPolicy = "strict-origin-when-cross-origin";
-
-        const removeButton = makeElement("button", "danger", "Remove from library");
-        removeButton.type = "button";
-
-        removeButton.addEventListener("click", async () => {
-          if (busy) return;
-
-          const confirmed = window.confirm(
-            `Remove "${item.title}" from your Candlee library?`
-          );
-
-          if (!confirmed) return;
-
-          busy = true;
-          removeButton.disabled = true;
-
-          const { error: deleteError } = await supabase
-            .from("spotify_library")
-            .delete()
-            .eq("id", item.id)
-            .eq("user_id", currentUser.id);
-
-          busy = false;
-          removeButton.disabled = false;
-
-          if (deleteError) {
-            showMessage(
-              libraryMessage,
-              "We couldn't remove that item. Please try again.",
-              "error"
-            );
-            console.error("Spotify library delete error:", deleteError);
-            return;
-          }
-
-          await loadLibrary();
-          showMessage(libraryMessage, "Music removed from your library ♡", "success");
-        });
-
-        card.append(heading, player, removeButton);
-        musicList.appendChild(card);
-      }
-
-      if (!musicList.children.length) {
-        musicList.appendChild(
-          makeElement("div", "empty", "We couldn't display these Spotify links. Try adding a new link from Spotify.")
-        );
-      }
-    }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (busy || !currentUser) return;
-
-      hideMessage(formMessage);
-
-      const title = titleInput.value.trim();
-      const spotifyUrl = urlInput.value.trim();
-      const embedUrl = getSpotifyEmbedUrl(spotifyUrl);
-
-      if (!title) {
-        showMessage(formMessage, "Please give your music a name first. ♡", "error");
-        return;
-      }
-
-      if (!embedUrl) {
-        showMessage(
-          formMessage,
-          "Please paste a valid Spotify playlist, album, track, episode, or show link from open.spotify.com.",
-          "error"
-        );
-        return;
-      }
-
-      busy = true;
-      saveButton.disabled = true;
-      saveButton.textContent = "Saving your music…";
-
-      const { error } = await supabase
-        .from("spotify_library")
-        .insert({
-          user_id: currentUser.id,
-          title,
-          spotify_url: spotifyUrl
-        });
-
-      busy = false;
-      saveButton.disabled = false;
-      saveButton.textContent = "Save to my library ♡";
-
-      if (error) {
-        showMessage(
-          formMessage,
-          "We couldn't save that link. Please try again. If the problem continues, check the database setup.",
-          "error"
-        );
-        console.error("Spotify library save error:", error);
-        return;
-      }
-
-      form.reset();
-      showMessage(formMessage, "Saved to your personal Spotify library! 🎧💕", "success");
-      await loadLibrary();
-    });
-
-    refreshButton.addEventListener("click", loadLibrary);
-
-    async function startPage() {
-      const { data, error } = await supabase.auth.getSession();
-
-      if (error) {
-        accountText.textContent = "We couldn't check your sign-in session.";
-        console.error("Session check error:", error);
-        return;
-      }
-
-      if (!data.session) {
-        window.location.replace("signin.html");
-        return;
-      }
-
-      currentUser = data.session.user;
-      accountText.textContent = "Signed in as " + currentUser.email;
-
-      await loadLibrary();
-    }
-
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        window.location.replace("signin.html");
-      }
-    });
-
-    startPage();
-  </script>
-</body>
-</html>
-```
+        console.error("Spotify library load error:",
