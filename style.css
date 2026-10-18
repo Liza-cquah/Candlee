@@ -1,4 +1,4 @@
-```css
+
 /* =========================================
    CANDLEE ♡
    A little light for your everyday.
@@ -157,6 +157,7 @@ select {
 
 button {
   color: inherit;
+  cursor: pointer;
 }
 
 button:focus-visible,
@@ -175,10 +176,6 @@ button:disabled {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
-}
-
-button {
-  cursor: pointer;
 }
 
 [hidden] {
@@ -891,18 +888,9 @@ a:focus-visible {
   font-size: 16px;
 }
 
-.study-card {
-  background: linear-gradient(145deg, var(--surface), var(--surface-soft));
-}
-
-.goals-card {
-  background: linear-gradient(145deg, var(--surface), var(--surface-soft));
-}
-
-.habits-card {
-  background: linear-gradient(145deg, var(--surface), var(--surface-soft));
-}
-
+.study-card,
+.goals-card,
+.habits-card,
 .letters-card {
   background: linear-gradient(145deg, var(--surface), var(--surface-soft));
 }
@@ -1304,6 +1292,328 @@ textarea::placeholder {
   color: var(--text-soft);
   font-size: 10px;
   text-align: center;
+}
+
+/* DIGITAL NOTEBOOK */
+
+.notebook-card {
+  overflow: hidden;
+}
+
+.notebook-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.notebook-heading h2 {
+  margin-bottom: 8px;
+}
+
+.notebook-heading .eyebrow {
+  margin-bottom: 8px;
+}
+
+.notebook-subtitle {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.notebook-search,
+.notebook-subject,
+.notebook-title,
+.notebook-writing {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  color: var(--text);
+}
+
+.notebook-search {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.notebook-layout {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(0, 2fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.notebook-sidebar {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.notebook-sidebar > .eyebrow {
+  margin-bottom: 14px;
+}
+
+.notebook-page-list {
+  display: grid;
+  gap: 8px;
+}
+
+.notebook-page-button {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  text-align: left;
+  overflow-wrap: anywhere;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.notebook-page-button:hover {
+  background: var(--surface-soft);
+  border-color: var(--border);
+}
+
+.notebook-page-button.active {
+  background: var(--surface-soft);
+  border-color: var(--accent);
+}
+
+.notebook-page-button strong,
+.notebook-page-button span {
+  display: block;
+}
+
+.notebook-page-button strong {
+  margin-bottom: 5px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.notebook-page-button span {
+  color: var(--text-soft);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.notebook-empty {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text-soft);
+}
+
+/* Warm paper stays readable in every Candlee theme. */
+
+.notebook-paper {
+  --paper: #fbf7ec;
+  --paper-ink: #514637;
+  --paper-muted: #817664;
+  --paper-line: rgba(108, 133, 112, 0.2);
+
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--paper-ink);
+  border: 1px solid #d9cbb4;
+  border-radius: 5px 14px 14px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 37px,
+      rgba(176, 103, 92, 0.28) 38px,
+      transparent 39px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--paper) 0,
+      var(--paper) 31px,
+      var(--paper-line) 32px,
+      var(--paper) 33px
+    );
+
+  box-shadow:
+    5px 5px 0 rgba(100, 77, 49, 0.06),
+    0 10px 24px rgba(70, 52, 31, 0.09);
+
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+.notebook-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: rgba(113, 91, 63, 0.12);
+  pointer-events: none;
+}
+
+.notebook-paper-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 470px;
+  padding: 25px 24px 20px 54px;
+}
+
+.notebook-chapter {
+  margin: 0 0 22px;
+  color: #71836c;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.notebook-field-label {
+  display: block;
+  margin: 0 0 4px;
+  color: #8b7c68;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+}
+
+.notebook-subject,
+.notebook-title,
+.notebook-writing {
+  display: block;
+  border: 0;
+  border-radius: 0;
+  outline-offset: 3px;
+  background: transparent;
+  box-shadow: none;
+  font-family: inherit;
+}
+
+.notebook-subject {
+  min-height: 34px;
+  margin-bottom: 12px;
+  padding: 5px 0;
+  color: var(--paper-ink);
+  font-size: 12px;
+}
+
+.notebook-title {
+  min-height: 45px;
+  margin-bottom: 14px;
+  padding: 5px 0;
+  color: #425845;
+  font-family: var(--font-heading);
+  font-size: clamp(21px, 3vw, 29px);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.notebook-writing {
+  flex: 1;
+  min-height: 230px;
+  padding: 0;
+  color: var(--paper-ink);
+  resize: vertical;
+  line-height: 33px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.notebook-subject::placeholder,
+.notebook-title::placeholder,
+.notebook-writing::placeholder {
+  color: #a99d8b;
+  opacity: 0.9;
+}
+
+.notebook-subject:focus,
+.notebook-title:focus,
+.notebook-writing:focus {
+  outline: 1px dashed #92a18a;
+}
+
+.notebook-subject:disabled,
+.notebook-title:disabled,
+.notebook-writing:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  -webkit-text-fill-color: var(--paper-ink);
+}
+
+.notebook-title:disabled {
+  -webkit-text-fill-color: #425845;
+}
+
+.notebook-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(108, 133, 112, 0.22);
+}
+
+.notebook-footer > span {
+  min-width: 0;
+  color: var(--paper-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.notebook-footer .outline-button {
+  min-height: 34px;
+  padding: 8px 11px;
+  border-color: #d9cbb4;
+  color: #756650;
+  font-size: 10px;
+}
+
+.notebook-footer .outline-button:hover {
+  background: rgba(113, 131, 108, 0.1);
+}
+
+.notebook-footer .outline-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Small, quiet page-turn animation. */
+
+.notebook-paper.page-turn {
+  animation: notebook-page-turn 0.48s ease-in-out;
+}
+
+@keyframes notebook-page-turn {
+  0% {
+    transform: perspective(900px) rotateY(0deg);
+    box-shadow:
+      5px 5px 0 rgba(100, 77, 49, 0.06),
+      0 10px 24px rgba(70, 52, 31, 0.09);
+  }
+
+  45% {
+    transform: perspective(900px) rotateY(-8deg) translateX(3px);
+    box-shadow:
+      10px 8px 0 rgba(100, 77, 49, 0.08),
+      0 15px 28px rgba(70, 52, 31, 0.14);
+  }
+
+  100% {
+    transform: perspective(900px) rotateY(0deg);
+    box-shadow:
+      5px 5px 0 rgba(100, 77, 49, 0.06),
+      0 10px 24px rgba(70, 52, 31, 0.09);
+  }
 }
 
 /* HABITS, GOALS, LETTERS, AND VISION */
@@ -1828,6 +2138,72 @@ textarea::placeholder {
   }
 }
 
+/* NOTEBOOK RESPONSIVE LAYOUT */
+
+@media (max-width: 650px) {
+  .notebook-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .notebook-sidebar {
+    padding: 12px;
+  }
+
+  .notebook-page-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .notebook-paper-inner {
+    min-height: 420px;
+    padding: 22px 15px 18px 43px;
+  }
+
+  .notebook-paper {
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 29px,
+        rgba(176, 103, 92, 0.28) 30px,
+        transparent 31px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        #fbf7ec 0,
+        #fbf7ec 31px,
+        rgba(108, 133, 112, 0.2) 32px,
+        #fbf7ec 33px
+      );
+  }
+
+  .notebook-writing {
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 420px) {
+  .notebook-heading {
+    gap: 12px;
+  }
+
+  .notebook-heading > .soft-button {
+    width: 100%;
+  }
+
+  .notebook-page-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .notebook-footer {
+    align-items: flex-start;
+  }
+
+  .notebook-footer .outline-button {
+    width: 100%;
+  }
+}
+
 /* REDUCED MOTION ACCESSIBILITY */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1839,5 +2215,12 @@ textarea::placeholder {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+
+  .notebook-paper.page-turn {
+    animation: none;
+  }
+
+  .notebook-page-button {
+    transition: none;
+  }
 }
-```
