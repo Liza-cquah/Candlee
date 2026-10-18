@@ -1520,11 +1520,16 @@ textarea::placeholder {
   flex: 1;
   min-height: 230px;
   padding: 0;
+  margin: 0;
+  border: 0;
   color: var(--paper-ink);
   resize: vertical;
   line-height: 33px;
   font-size: 13px;
+  font-family: "DM Sans", sans-serif;
   overflow-wrap: anywhere;
+  background: transparent;
+  background-attachment: local;
 }
 
 .notebook-subject::placeholder,
