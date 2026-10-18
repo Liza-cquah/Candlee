@@ -1,25 +1,12 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Welcome to Candlee ♡</title>
+  <title>Sign In | Candlee</title>
 
   <style>
-    :root {
-      --cream: #fffaf5;
-      --pink: #f4dce3;
-      --dark-pink: #d88fa5;
-      --brown: #624b42;
-      --light-brown: #92776b;
-      --border: #eadbd3;
-      --green: #49765a;
-      --red: #a94343;
-      --white: #ffffff;
-    }
-
     * {
       box-sizing: border-box;
     }
@@ -27,532 +14,412 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 24px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      padding: 24px;
+      background: #fff8f2;
+      color: #674d48;
       font-family: Georgia, "Times New Roman", serif;
-      color: var(--brown);
-      background:
-        radial-gradient(
-          circle at top left,
-          #f8e7eb,
-          transparent 40%
-        ),
-        radial-gradient(
-          circle at bottom right,
-          #f4e5d5,
-          transparent 40%
-        ),
-        var(--cream);
-    }
-
-    .page {
-      width: 100%;
-      max-width: 440px;
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 22px;
-    }
-
-    .brand-icon {
-      font-size: 44px;
-      margin-bottom: 4px;
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 42px;
-      letter-spacing: 1px;
-    }
-
-    .brand p {
-      margin-top: 8px;
-      color: var(--light-brown);
-      font-size: 15px;
     }
 
     .card {
-      padding: 32px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid var(--border);
-      border-radius: 25px;
-      box-shadow: 0 15px 45px rgba(98, 75, 66, 0.09);
+      width: 100%;
+      max-width: 430px;
+      padding: 36px 28px;
+      background: #fffdfb;
+      border: 1px solid #f2dfd6;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(130, 87, 75, 0.09);
+      text-align: center;
     }
 
-    .card h2 {
-      text-align: center;
+    .logo {
+      margin-bottom: 8px;
+      font-size: 38px;
+    }
+
+    h1 {
       margin: 0 0 10px;
-      font-size: 27px;
+      color: #a66f78;
+      font-size: 36px;
+      font-weight: normal;
     }
 
     .subtitle {
-      text-align: center;
-      color: var(--light-brown);
+      margin: 0 0 26px;
+      color: #947b73;
       line-height: 1.6;
-      margin: 0 0 25px;
-      font-size: 14px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+      text-align: left;
     }
 
     label {
       display: block;
-      margin: 17px 0 8px;
+      margin-bottom: 7px;
       font-size: 14px;
-      font-weight: bold;
     }
 
     input {
       width: 100%;
-      padding: 14px;
-      border: 1px solid var(--border);
+      padding: 13px 14px;
+      border: 1px solid #ead7ce;
       border-radius: 12px;
-      background: var(--cream);
-      color: var(--brown);
-      font-size: 15px;
-      font-family: Arial, sans-serif;
+      background: #fffaf7;
+      color: #674d48;
+      font: inherit;
       outline: none;
     }
 
     input:focus {
-      border-color: var(--dark-pink);
-      box-shadow: 0 0 0 3px rgba(216, 143, 165, 0.15);
+      border-color: #cb9da4;
+      box-shadow: 0 0 0 3px rgba(203, 157, 164, 0.15);
     }
 
     button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 8px;
       border: none;
       border-radius: 12px;
-      padding: 13px 16px;
-      font-size: 14px;
-      font-family: Arial, sans-serif;
+      background: #c78f99;
+      color: white;
+      font: inherit;
+      font-size: 16px;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #ae7480;
     }
 
     button:disabled {
-      opacity: 0.6;
+      opacity: 0.65;
       cursor: wait;
     }
 
-    button:focus-visible {
-      outline: 3px solid var(--dark-pink);
-      outline-offset: 3px;
-    }
-
-    .primary {
-      width: 100%;
-      margin-top: 24px;
-      background: var(--dark-pink);
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .primary:hover {
-      background: #c87e95;
-    }
-
     .text-button {
-      display: block;
-      margin: 13px auto 0;
-      padding: 7px;
+      width: auto;
+      margin: 14px 0 0;
+      padding: 4px;
       background: transparent;
-      color: var(--light-brown);
-    }
-
-    .switch-text {
-      text-align: center;
-      margin: 22px 0 0;
-      color: var(--light-brown);
+      color: #a66f78;
       font-size: 14px;
     }
 
-    .switch-button {
-      display: inline;
-      padding: 0;
+    .text-button:hover {
       background: transparent;
-      color: #bd7089;
-      font-size: 14px;
-      font-weight: bold;
+      color: #80515b;
+      text-decoration: underline;
     }
 
     .message {
       display: none;
       margin-top: 18px;
-      padding: 13px;
+      padding: 12px;
       border-radius: 12px;
-      font-family: Arial, sans-serif;
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.5;
       overflow-wrap: anywhere;
     }
 
-    .message.success {
+    .message.show {
       display: block;
-      background: #edf6ee;
-      color: var(--green);
-      border: 1px solid #d2e6d5;
     }
 
     .message.error {
-      display: block;
-      background: #fff0ef;
-      color: var(--red);
-      border: 1px solid #f0d2cf;
+      background: #fff0ed;
+      color: #a13f38;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 22px;
-      color: var(--light-brown);
-      font-size: 12px;
+    .message.success {
+      background: #edf7ee;
+      color: #3f7048;
     }
 
     .hidden {
       display: none !important;
     }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 16px;
-      }
-
-      .card {
-        padding: 25px 20px;
-      }
-
-      .brand h1 {
-        font-size: 36px;
-      }
+    .footer {
+      margin-top: 25px;
+      color: #a18a80;
+      font-size: 12px;
+      line-height: 1.6;
     }
   </style>
 </head>
 
 <body>
+  <main class="card">
+    <div class="logo">🕯️</div>
+    <h1>Candlee</h1>
 
-  <main class="page">
+    <p class="subtitle" id="subtitle">
+      A little space to grow, dream, and become.
+    </p>
 
-    <header class="brand">
-      <div class="brand-icon">🕯️</div>
-      <h1>Candlee</h1>
-      <p>A little space for the life you're creating.</p>
-    </header>
+    <form id="authForm">
+      <div class="field hidden" id="nameField">
+        <label for="displayName">What should we call you?</label>
+        <input
+          id="displayName"
+          type="text"
+          placeholder="Your name"
+          autocomplete="name"
+        >
+      </div>
 
-    <section class="card">
-
-      <h2 id="formTitle">Welcome back ♡</h2>
-
-      <p class="subtitle" id="formSubtitle">
-        Your dreams, your goals, your little moments.
-        Let's pick up where you left off.
-      </p>
-
-      <form id="authForm">
-
-        <div id="nameGroup" class="hidden">
-          <label for="displayName">What should we call you?</label>
-          <input
-            type="text"
-            id="displayName"
-            placeholder="Your name"
-            autocomplete="name"
-          >
-        </div>
-
+      <div class="field" id="emailField">
         <label for="email">Email address</label>
         <input
-          type="email"
           id="email"
+          type="email"
           placeholder="you@example.com"
           autocomplete="email"
           required
         >
+      </div>
 
-        <label for="password" id="passwordLabel">Password</label>
+      <div class="field" id="passwordField">
+        <label for="password">Password</label>
         <input
-          type="password"
           id="password"
-          placeholder="At least 8 characters"
-          minlength="8"
+          type="password"
+          placeholder="Your password"
           autocomplete="current-password"
           required
         >
+      </div>
 
-        <div id="confirmGroup" class="hidden">
-          <label for="confirmPassword">Confirm password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            placeholder="Type your password again"
-            minlength="8"
-            autocomplete="new-password"
-          >
-        </div>
+      <div class="field hidden" id="confirmField">
+        <label for="confirmPassword">Confirm password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          placeholder="Enter your password again"
+          autocomplete="new-password"
+        >
+      </div>
 
-        <button type="submit" class="primary" id="submitButton">
-          Sign in ♡
-        </button>
-
-      </form>
-
-      <button
-        type="button"
-        class="text-button"
-        id="forgotButton"
-      >
-        Forgot your password?
+      <button type="submit" id="submitButton">
+        Sign In
       </button>
+    </form>
 
-      <div
-        id="message"
-        class="message"
-        role="status"
-        aria-live="polite"
-      ></div>
+    <button
+      type="button"
+      class="text-button"
+      id="forgotButton"
+    >
+      Forgot your password?
+    </button>
 
-      <p class="switch-text" id="switchText">
-        <span id="switchPrompt">New to Candlee?</span>
-        <button
-          type="button"
-          class="switch-button"
-          id="switchButton"
-        >Create an account</button>
-      </p>
+    <button
+      type="button"
+      class="text-button"
+      id="switchButton"
+    >
+      Don't have an account? Sign up
+    </button>
 
-    </section>
+    <button
+      type="button"
+      class="text-button hidden"
+      id="backButton"
+    >
+      Back to sign in
+    </button>
 
-    <footer class="footer">
-      Made with love, just for your next chapter ♡
-    </footer>
+    <div
+      id="message"
+      class="message"
+      role="status"
+      aria-live="polite"
+    ></div>
 
+    <p class="footer">
+      Take a breath. You're allowed to grow at your own pace. ♡
+    </p>
   </main>
 
   <script type="module">
     import { createClient } from
-      "https://esm.sh/@supabase/supabase-js@2";
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
     const SUPABASE_URL =
       "https://snodsrcvlezthsenvrli.supabase.co";
 
-    const SUPABASE_PUBLISHABLE_KEY =
+    const SUPABASE_KEY =
       "sb_publishable_Qv2gVkdWnjxP52zub-OLnA_7Teh9AYR";
 
     const supabase = createClient(
       SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
+      SUPABASE_KEY
     );
 
-    const $ = (id) => document.getElementById(id);
+    const authForm = document.getElementById("authForm");
+    const subtitle = document.getElementById("subtitle");
+    const nameField = document.getElementById("nameField");
+    const emailField = document.getElementById("emailField");
+    const passwordField = document.getElementById("passwordField");
+    const confirmField = document.getElementById("confirmField");
+
+    const displayName = document.getElementById("displayName");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+
+    const submitButton = document.getElementById("submitButton");
+    const switchButton = document.getElementById("switchButton");
+    const forgotButton = document.getElementById("forgotButton");
+    const backButton = document.getElementById("backButton");
+    const message = document.getElementById("message");
 
     let mode = "signin";
     let busy = false;
 
-    const form = $("authForm");
-    const submitButton = $("submitButton");
-    const switchButton = $("switchButton");
-    const forgotButton = $("forgotButton");
-    const messageBox = $("message");
-
     function showMessage(text, type = "success") {
-      messageBox.textContent = text;
-      messageBox.className = "message " + type;
+      message.textContent = text;
+      message.className = "message show " + type;
     }
 
     function clearMessage() {
-      messageBox.textContent = "";
-      messageBox.className = "message";
+      message.textContent = "";
+      message.className = "message";
     }
 
     function setBusy(value) {
       busy = value;
-
       submitButton.disabled = value;
-      switchButton.disabled = value;
-      forgotButton.disabled = value;
-
-      if (value) {
-        submitButton.textContent = "Please wait…";
-      } else {
-        updateForm();
-      }
+      submitButton.textContent = value
+        ? "Please wait..."
+        : getButtonText();
     }
 
-    function updateForm() {
-      $("nameGroup").classList.toggle(
-        "hidden",
-        mode !== "signup"
-      );
+    function getButtonText() {
+      if (mode === "signup") return "Create Account";
+      if (mode === "reset") return "Send Reset Link";
+      if (mode === "update") return "Update Password";
+      return "Sign In";
+    }
 
-      $("confirmGroup").classList.toggle(
+    function setMode(newMode) {
+      mode = newMode;
+      clearMessage();
+
+      const signingUp = mode === "signup";
+      const resetting = mode === "reset";
+      const updating = mode === "update";
+
+      nameField.classList.toggle("hidden", !signingUp);
+      confirmField.classList.toggle("hidden", !signingUp && !updating);
+      emailField.classList.toggle("hidden", updating);
+      passwordField.classList.toggle("hidden", resetting);
+
+      displayName.required = signingUp;
+      confirmPassword.required = signingUp || updating;
+      email.required = !updating;
+      password.required = !resetting;
+
+      password.autocomplete = signingUp || updating
+        ? "new-password"
+        : "current-password";
+
+      submitButton.textContent = getButtonText();
+
+      switchButton.classList.toggle(
         "hidden",
-        mode !== "signup"
+        resetting || updating
       );
 
       forgotButton.classList.toggle(
         "hidden",
-        mode !== "signin"
+        signingUp || resetting || updating
       );
 
-      $("formTitle").textContent =
-        mode === "signup"
-          ? "Your new beginning ♡"
-          : mode === "reset"
-          ? "Choose a new password ♡"
-          : "Welcome back ♡";
-
-      $("formSubtitle").textContent =
-        mode === "signup"
-          ? "Create your little corner of the world."
-          : mode === "reset"
-          ? "Choose a new password for your Candlee account."
-          : "Your dreams, your goals, your little moments. Let's pick up where you left off.";
-
-      submitButton.textContent =
-        mode === "signup"
-          ? "Create my account ♡"
-          : mode === "reset"
-          ? "Save new password ♡"
-          : "Sign in ♡";
-
-      $("switchPrompt").textContent =
-        mode === "signup"
-          ? "Already have an account?"
-          : "New to Candlee?";
-
-      switchButton.textContent =
-        mode === "signup"
-          ? "Sign in"
-          : "Create an account";
-
-      $("switchText").classList.toggle(
+      backButton.classList.toggle(
         "hidden",
-        mode === "reset"
+        mode === "signin"
       );
 
-      $("passwordLabel").textContent =
-        mode === "reset" ? "New password" : "Password";
-
-      $("password").placeholder =
-        mode === "signin"
-          ? "Your password"
-          : "At least 8 characters";
-
-      $("password").autocomplete =
-        mode === "signin"
-          ? "current-password"
-          : "new-password";
-
-      $("password").minLength = 8;
-
-      $("confirmPassword").required = mode === "signup";
-      $("displayName").required = mode === "signup";
-
-      switchButton.disabled = busy;
-      forgotButton.disabled = busy;
-      submitButton.disabled = busy;
-    }
-
-    function changeMode(newMode) {
-      if (busy) return;
-
-      mode = newMode;
-      form.reset();
-      clearMessage();
-      updateForm();
-    }
-
-    // This button stays in the page permanently.
-    // It is not recreated when the form changes.
-    switchButton.addEventListener("click", () => {
-      if (busy) return;
-
-      if (mode === "signin") {
-        changeMode("signup");
-      } else if (mode === "signup") {
-        changeMode("signin");
+      if (mode === "signup") {
+        subtitle.textContent =
+          "Create a little space just for you.";
+        switchButton.textContent =
+          "Already have an account? Sign in";
+      } else if (mode === "reset") {
+        subtitle.textContent =
+          "We'll send you a link to reset your password.";
+      } else if (mode === "update") {
+        subtitle.textContent =
+          "Choose a new password for your account.";
+      } else {
+        subtitle.textContent =
+          "A little space to grow, dream, and become.";
+        switchButton.textContent =
+          "Don't have an account? Sign up";
       }
-    });
+    }
 
     function goToDashboard() {
+      // This function name is kept so existing calls still work.
+      // Candlee now sends users to the homepage.
       window.location.href = new URL(
-        "dashboard.html",
+        "index.html",
         window.location.href
       ).href;
     }
 
     async function checkExistingSession() {
-      try {
-        const { data, error } =
-          await supabase.auth.getSession();
+      const { data, error } = await supabase.auth.getSession();
 
-        if (error) {
-          console.error("Session check failed:", error);
-          return;
-        }
+      if (error) {
+        showMessage(error.message, "error");
+        return;
+      }
 
-        if (
-          data.session &&
-          !window.location.hash.includes("type=recovery")
-        ) {
-          goToDashboard();
-          return;
-        }
-
-        if (window.location.hash.includes("type=recovery")) {
-          mode = "reset";
-          updateForm();
-
-          showMessage(
-            "Choose your new password below."
-          );
-        }
-      } catch (error) {
-        console.error("Could not check session:", error);
+      if (data.session) {
+        goToDashboard();
       }
     }
 
-    form.addEventListener("submit", async (event) => {
+    authForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       if (busy) return;
 
       clearMessage();
-
-      const email = $("email").value.trim();
-      const password = $("password").value;
-
       setBusy(true);
 
       try {
         if (mode === "signup") {
-          const displayName = $("displayName").value.trim();
-          const confirmPassword = $("confirmPassword").value;
-
-          if (!displayName) {
-            throw new Error("Please enter your name.");
+          if (password.value !== confirmPassword.value) {
+            showMessage("Your passwords don't match.", "error");
+            return;
           }
 
-          if (password.length < 8) {
-            throw new Error(
-              "Your password must contain at least 8 characters."
+          if (password.value.length < 6) {
+            showMessage(
+              "Please use a password with at least 6 characters.",
+              "error"
             );
-          }
-
-          if (password !== confirmPassword) {
-            throw new Error(
-              "Your passwords don't match. Please try again!"
-            );
+            return;
           }
 
           const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
+            email: email.value.trim(),
+            password: password.value,
             options: {
               data: {
-                display_name: displayName
+                display_name: displayName.value.trim()
               },
               emailRedirectTo: new URL(
-                "signin.html",
+                "index.html",
                 window.location.href
               ).href
             }
@@ -561,62 +428,78 @@
           if (error) throw error;
 
           if (data.session) {
-            showMessage(
-              "Your account is ready! Welcome to Candlee ♡"
-            );
-
-            goToDashboard();
+            showMessage("Your account is ready! Welcome to Candlee.");
+            window.location.href = new URL(
+              "index.html",
+              window.location.href
+            ).href;
             return;
           }
 
-          mode = "signin";
-          form.reset();
-          updateForm();
-
           showMessage(
-            "Your sign-up request was received! Check your email for a confirmation link if email confirmation is enabled. After confirming, return here and sign in."
+            "Your account has been created! Please check your email to confirm your account before signing in."
           );
 
+          setMode("signin");
         } else if (mode === "signin") {
-          const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-          });
+          const { data, error } =
+            await supabase.auth.signInWithPassword({
+              email: email.value.trim(),
+              password: password.value
+            });
 
           if (error) throw error;
 
-          showMessage("You're signed in! Welcome back ♡");
-          goToDashboard();
-          return;
-
+          if (data.session) {
+            goToDashboard();
+          }
         } else if (mode === "reset") {
-          const { error } = await supabase.auth.updateUser({
-            password
-          });
+          const redirectTo = new URL(
+            "signin.html",
+            window.location.href
+          ).href;
 
-          if (error) throw error;
-
-          window.history.replaceState(
-            null,
-            "",
-            window.location.pathname + window.location.search
+          const { error } = await supabase.auth.resetPasswordForEmail(
+            email.value.trim(),
+            { redirectTo }
           );
 
-          mode = "signin";
-          form.reset();
-          updateForm();
+          if (error) throw error;
 
           showMessage(
-            "Your password has been updated! You can now sign in with your new password."
+            "If your account exists, a password reset email will be sent. Please check your inbox."
           );
+        } else if (mode === "update") {
+          if (password.value !== confirmPassword.value) {
+            showMessage("Your passwords don't match.", "error");
+            return;
+          }
+
+          if (password.value.length < 6) {
+            showMessage(
+              "Please use a password with at least 6 characters.",
+              "error"
+            );
+            return;
+          }
+
+          const { error } = await supabase.auth.updateUser({
+            password: password.value
+          });
+
+          if (error) throw error;
+
+          showMessage(
+            "Your password has been updated! Welcome back to Candlee."
+          );
+
+          setTimeout(() => {
+            goToDashboard();
+          }, 1200);
         }
-
       } catch (error) {
-        console.error("Candlee authentication error:", error);
-
         showMessage(
-          error.message ||
-          "Something went wrong. Please try again.",
+          error.message || "Something went wrong. Please try again.",
           "error"
         );
       } finally {
@@ -624,68 +507,39 @@
       }
     });
 
-    forgotButton.addEventListener("click", async () => {
-      if (busy) return;
+    switchButton.addEventListener("click", () => {
+      setMode(mode === "signin" ? "signup" : "signin");
+    });
 
-      const email = $("email").value.trim();
+    forgotButton.addEventListener("click", () => {
+      setMode("reset");
+    });
 
-      clearMessage();
-
-      if (!email) {
-        showMessage(
-          "Enter your email address first, then click Forgot your password.",
-          "error"
-        );
-
-        $("email").focus();
-        return;
-      }
-
-      setBusy(true);
-
-      try {
-        const { error } =
-          await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: new URL(
-              "signin.html",
-              window.location.href
-            ).href
-          });
-
-        if (error) throw error;
-
-        showMessage(
-          "If an account exists for that email, a password reset link will be sent. Check your inbox."
-        );
-
-      } catch (error) {
-        console.error("Password reset error:", error);
-
-        showMessage(
-          error.message ||
-          "We couldn't send the reset email. Please try again.",
-          "error"
-        );
-      } finally {
-        setBusy(false);
-      }
+    backButton.addEventListener("click", () => {
+      setMode("signin");
     });
 
     supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") {
-        mode = "reset";
-        updateForm();
-
-        showMessage(
-          "You're in password reset mode. Choose your new password below."
-        );
+        setMode("update");
+        showMessage("Please choose your new password.");
       }
     });
 
-    updateForm();
-    checkExistingSession();
-  </script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(
+      window.location.hash.replace(/^#/, "")
+    );
 
+    const isRecovery =
+      urlParams.get("type") === "recovery" ||
+      hashParams.get("type") === "recovery";
+
+    if (isRecovery) {
+      setMode("update");
+    } else {
+      checkExistingSession();
+    }
+  </script>
 </body>
 </html>
-```
